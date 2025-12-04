@@ -265,6 +265,20 @@
       filter: brightness(0.94);
     }
 
+    .btn[disabled],
+    .btn-secondary[disabled],
+    .btn-disabled {
+      opacity: 0.5;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .btn[disabled]:active,
+    .btn-secondary[disabled]:active {
+      transform: none;
+      filter: none;
+    }
+
     .bottom-actions {
       display: flex;
       justify-content: center;
@@ -394,6 +408,7 @@
     }
 
     /* Картинка в списке */
+
     .card-main {
       display: flex;
       gap: 12px;
@@ -421,6 +436,7 @@
     }
 
     /* Картинка на странице товара */
+
     .detail-image-wrap {
       width: 100%;
       max-width: 260px;
@@ -435,6 +451,34 @@
       width: 100%;
       display: block;
       object-fit: cover;
+    }
+
+    /* Статусы наличия */
+
+    .card-status {
+      margin-top: 4px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .status-available {
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #bbf7d0;
+      background: rgba(22, 163, 74, 0.2);
+    }
+
+    .status-out {
+      border-color: rgba(248, 113, 113, 0.8);
+      color: #fecaca;
+      background: rgba(127, 29, 29, 0.4);
     }
 
     .hidden {
@@ -528,6 +572,11 @@
     const PAGE_SIZE = 8;
     let currentDetail = null;
 
+    function isAvailable(product) {
+      // если inStock === false — нет в наличии, иначе считаем что есть
+      return !product || product.inStock !== false;
+    }
+
     function getCategories() {
       const set = new Set();
       products.forEach((p) => set.add(p.category));
@@ -613,6 +662,12 @@
     }
 
     function addToCart(id) {
+      const product = products.find((p) => p.id === id);
+      if (product && !isAvailable(product)) {
+        alert("Этого товара сейчас нет в наличии.");
+        return;
+      }
+
       const existing = cart.find((item) => item.id === id);
       if (existing) {
         existing.qty += 1;
@@ -620,7 +675,6 @@
         cart.push({ id, qty: 1 });
       }
       updateCartButton();
-      // можно без alert, чтобы не раздражать; оставлю тихо
     }
 
     function renderProducts() {
@@ -642,6 +696,12 @@
         card.className = "card";
         card.dataset.id = p.id;
 
+        const available = isAvailable(p);
+        const statusText = available ? "В наличии" : "Нет в наличии";
+        const statusClass = available ? "status-available" : "status-out";
+        const disabledAttr = available ? "" : "disabled";
+        const disabledClass = available ? "" : " btn-disabled";
+
         card.innerHTML = `
           <div class="card-main">
             ${p.image ? `
@@ -658,6 +718,9 @@
                   </div>
                   <div class="card-sku">ID: ${p.id}${p.sku ? " · " + p.sku : ""}</div>
                   <div class="card-category">${p.category}</div>
+                  <div class="card-status">
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                  </div>
                 </div>
                 <div class="card-price">${p.price} грн</div>
               </div>
@@ -666,10 +729,10 @@
                 <button class="btn-secondary" data-action="details" data-id="${p.id}">
                   Подробнее
                 </button>
-                <button class="btn-secondary" data-action="add_to_cart" data-id="${p.id}">
+                <button class="btn-secondary${disabledClass}" data-action="add_to_cart" data-id="${p.id}" ${disabledAttr}>
                   В корзину
                 </button>
-                <button class="btn" data-action="buy" data-id="${p.id}">
+                <button class="btn${disabledClass}" data-action="buy" data-id="${p.id}" ${disabledAttr}>
                   <span>Купить</span>
                   <span>➜</span>
                 </button>
@@ -712,6 +775,13 @@
       detailView.classList.remove("hidden");
 
       const s = product.specs || {};
+      const available = isAvailable(product);
+      const statusText = available ? "В наличии" : "Нет в наличии";
+      const statusClass = available ? "status-available" : "status-out";
+      const disabledAttr = available ? "" : "disabled";
+      const disabledClass = available ? "" : " btn-disabled";
+      const addLabel = available ? "В корзину" : "Нет в наличии";
+
       detailCard.innerHTML = `
         <div class="detail-header">
           <div class="detail-title-wrap">
@@ -720,6 +790,7 @@
               <span class="tag">${product.category}</span>
               ${product.sku ? `<span class="tag">Код: ${product.sku}</span>` : ""}
               <span class="tag">ID: ${product.id}</span>
+              <span class="tag status-badge ${statusClass}">${statusText}</span>
             </div>
           </div>
           <div class="detail-price">${product.price} грн</div>
@@ -775,8 +846,8 @@
           </div>
           <div class="detail-actions">
             <button class="btn-secondary" id="detailBackSmall">Каталог</button>
-            <button class="btn-secondary" id="detailAddToCart">В корзину</button>
-            <button class="btn" id="detailBuy">Купить</button>
+            <button class="btn-secondary${disabledClass}" id="detailAddToCart" ${disabledAttr}>${addLabel}</button>
+            <button class="btn${disabledClass}" id="detailBuy" ${disabledAttr}>Купить</button>
           </div>
         </div>
       `;
@@ -806,6 +877,11 @@
       const product = products.find((p) => p.id === id);
       if (!product) return;
 
+      if (!isAvailable(product)) {
+        alert("Этого товара сейчас нет в наличии.");
+        return;
+      }
+
       if (tg && tg.sendData) {
         const payload = {
           action: "buy",
@@ -824,10 +900,24 @@
         alert("Корзина пуста");
         return;
       }
-      const itemsPayload = cart.map((item) => ({
-        productId: item.id,
-        qty: item.qty
-      }));
+
+      const itemsPayload = cart
+        .map((item) => {
+          const p = products.find((x) => x.id === item.id);
+          if (!p || !isAvailable(p)) {
+            return null;
+          }
+          return {
+            productId: item.id,
+            qty: item.qty
+          };
+        })
+        .filter(Boolean);
+
+      if (!itemsPayload.length) {
+        alert("Все товары в корзине сейчас недоступны.");
+        return;
+      }
 
       if (tg && tg.sendData) {
         const payload = {
