@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <title>Мой магазин</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Скрипт Telegram WebApp -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -111,12 +115,17 @@
     <div id="products" class="products"></div>
 
     <div class="hint">
-      Позже эта страница будет открываться внутри Telegram как WebApp.
+      Нажми «Купить» — заявка уйдёт боту в Telegram.
     </div>
   </div>
 
   <script>
-    // Пока просто список товаров прямо в WebApp (потом можно будет брать с сервера)
+    const tg = window.Telegram ? window.Telegram.WebApp : null;
+    if (tg) {
+      tg.ready();
+    }
+
+    // Товары
     const products = [
       {
         id: 1,
@@ -164,7 +173,7 @@
         container.appendChild(card);
       });
 
-      // Обработчик нажатия "Купить" (пока просто алерт)
+      // Один обработчик на все кнопки
       container.addEventListener("click", (event) => {
         const btn = event.target.closest("button.btn");
         if (!btn) return;
@@ -173,7 +182,18 @@
         const product = products.find((p) => String(p.id) === String(id));
         if (!product) return;
 
-        alert(`Пока это демо.\nВ Telegram бот ты можешь написать: "купить ${product.id}"`);
+        if (tg && tg.sendData) {
+          // Отправляем данные в бота
+          const payload = {
+            action: "buy",
+            productId: product.id
+          };
+          tg.sendData(JSON.stringify(payload));
+          tg.close(); // можно закрыть WebApp после клика
+        } else {
+          // Если открыт не в Telegram (просто в браузере)
+          alert(`Сейчас это демо.\nВ Telegram-боте можно купить товар с ID ${product.id}.`);
+        }
       });
     }
 
