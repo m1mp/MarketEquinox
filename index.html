@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Мой магазин</title>
+  <title>Vape Market</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Telegram WebApp SDK -->
@@ -17,7 +17,7 @@
     }
 
     body {
-      background: radial-gradient(circle at top, #0f172a 0, #020617 40%, #020617 100%);
+      background: radial-gradient(circle at top, #020617 0, #020617 30%, #020617 100%);
       color: #e5e7eb;
       padding: 16px;
     }
@@ -60,10 +60,10 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.9);
       border-radius: 18px;
       padding: 10px 10px 12px;
-      border: 1px solid rgba(55, 65, 81, 0.8);
+      border: 1px solid rgba(55, 65, 81, 0.9);
       backdrop-filter: blur(10px);
     }
 
@@ -147,7 +147,7 @@
     }
 
     .card {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9));
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 0.95));
       border-radius: 18px;
       padding: 12px 14px;
       box-shadow: 0 12px 30px rgba(15, 23, 42, 0.8);
@@ -162,8 +162,7 @@
     .card:hover {
       transform: translateY(-2px);
       box-shadow: 0 16px 40px rgba(15, 23, 42, 1);
-      border-color: rgba(59, 130, 246, 0.7);
-      background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.28), rgba(15, 23, 42, 1));
+      border-color: rgba(56, 189, 248, 0.9);
     }
 
     .card-header {
@@ -189,7 +188,7 @@
 
     .card-sku {
       font-size: 11px;
-      color: #6b7280;
+      color: #9ca3af;
     }
 
     .card-category {
@@ -276,49 +275,177 @@
       color: #6b7280;
       text-align: center;
     }
+
+    /* ===== ДЕТАЛЬНАЯ СТРАНИЦА ===== */
+
+    .detail {
+      margin-top: 16px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.98));
+      border-radius: 20px;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 1);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .detail-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .detail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+    }
+
+    .detail-price {
+      font-size: 19px;
+      font-weight: 700;
+      color: #4ade80;
+      white-space: nowrap;
+    }
+
+    .detail-section-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #e5e7eb;
+    }
+
+    .detail-description {
+      font-size: 13px;
+      color: #cbd5f5;
+    }
+
+    .detail-specs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .spec {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 12px;
+      padding: 6px 8px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 12px;
+    }
+
+    .spec-label {
+      color: #9ca3af;
+      margin-bottom: 2px;
+    }
+
+    .spec-value {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .detail-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .detail-footer-left {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="header">
       <div class="header-badge">
-        <span>🛍</span>
-        <span>Маркетплейс WebApp</span>
+        <span>💨</span>
+        <span>Vape Market WebApp</span>
       </div>
-      <div class="header-title">Каталог товаров</div>
-      <div class="header-sub">Выбери категорию, отфильтруй и оформи заказ прямо в Telegram</div>
+      <div class="header-title">Каталог девайсов и жидкостей</div>
+      <div class="header-sub">Выбери устройство, изучи характеристики и оформи заявку в один клик</div>
     </div>
 
-    <div class="top-bar">
-      <div id="categoryBar" class="categories"></div>
+    <!-- ===== ЛИСТИНГ ===== -->
+    <div id="listView">
+      <div class="top-bar">
+        <div id="categoryBar" class="categories"></div>
 
-      <div class="filters-row">
-        <input
-          id="searchInput"
-          class="search-input"
-          type="text"
-          placeholder="Поиск по названию..."
-        />
-        <select id="sortSelect" class="sort-select">
-          <option value="default">Сортировка</option>
-          <option value="price_asc">Цена ↑ (дешевле)</option>
-          <option value="price_desc">Цена ↓ (дороже)</option>
-          <option value="newest">Сначала новые</option>
-          <option value="name_asc">По названию A–Я</option>
-        </select>
+        <div class="filters-row">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="text"
+            placeholder="Поиск по названию (например, Ice, Cola, Mango)..."
+          />
+          <select id="sortSelect" class="sort-select">
+            <option value="default">Сортировка</option>
+            <option value="price_asc">Цена ↑ (дешевле)</option>
+            <option value="price_desc">Цена ↓ (дороже)</option>
+            <option value="newest">Сначала новые</option>
+            <option value="name_asc">По названию A–Я</option>
+          </select>
+        </div>
+
+        <div id="counter" class="counter"></div>
       </div>
 
-      <div id="counter" class="counter"></div>
+      <div id="products" class="products"></div>
+
+      <div class="bottom-actions">
+        <button id="moreBtn" class="btn btn-secondary" style="display:none;">Показать ещё</button>
+      </div>
+
+      <div class="hint">
+        Нажми на карточку для деталей или сразу «Купить» — заявка уйдёт боту в Telegram.
+      </div>
     </div>
 
-    <div id="products" class="products"></div>
+    <!-- ===== ДЕТАЛЬНЫЙ ТОВАР ===== -->
+    <div id="detailView" class="hidden">
+      <button id="backBtn" class="btn btn-secondary" style="margin-bottom:10px;">
+        ← Назад к каталогу
+      </button>
 
-    <div class="bottom-actions">
-      <button id="moreBtn" class="btn btn-secondary" style="display:none;">Показать ещё</button>
-    </div>
-
-    <div class="hint">
-      Нажми «Купить» — заявка уйдёт боту в Telegram. Ты можешь закрыть это окно и продолжить общаться с ботом.
+      <div id="detailCard" class="detail"></div>
     </div>
   </div>
 
@@ -328,62 +455,108 @@
       tg.ready();
     }
 
-    // ========= ЗДЕСЬ МЕНЯЕШЬ ТОВАРЫ ПОД СЕБЯ =========
-    // Просто заменяй/добавляй объекты в этом массиве.
-    // Важно: id товара здесь должен совпадать с id в PRODUCTS в bot.py.
+    // ========= ТОВАРЫ ВЕЙП-НИШИ =========
+    // ВАЖНО: id должны совпадать с PRODUCT.id в bot.py
     const products = [
       {
         id: 1,
-        name: "Кроссовки Nike Air",
-        price: 2999,
-        description: "Удобные кроссовки для повседневной носки.",
-        category: "Обувь",
-        sku: "SNK-001"
+        name: "Одноразка Elf Bar 600 Mango Ice",
+        price: 350,
+        descriptionShort: "Классический Elf Bar на 600 затяжек с манго и лёгким холодком.",
+        descriptionFull: "Сбалансированный вкус спелого манго с умеренным охлаждением. Подойдёт и новичкам, и тем, кто любит фруктовые миксы без лишней сладости.",
+        category: "Одноразки",
+        sku: "DISP-ELF-600-MGICE",
+        specs: {
+          puffs: "до 600",
+          nicotine: "2% (20 mg/ml)",
+          volume: "2 мл",
+          battery: "550 mAh",
+          taste: "Mango · Ice"
+        }
       },
       {
         id: 2,
-        name: "Футболка Oversize",
-        price: 999,
-        description: "Чёрная футболка oversize, 100% хлопок.",
-        category: "Одежда",
-        sku: "TEE-001"
+        name: "Одноразка HQD Cuvie Plus Cola Ice",
+        price: 420,
+        descriptionShort: "Увеличенный объём и яркий вкус холодной колы.",
+        descriptionFull: "Газированная кола со льдом — яркий традиционный вкус. Плотный пар, выраженный хит и приятное послевкусие.",
+        category: "Одноразки",
+        sku: "DISP-HQD-CPLUS-COLA",
+        specs: {
+          puffs: "до 1200",
+          nicotine: "5% (50 mg/ml)",
+          volume: "5 мл",
+          battery: "950 mAh",
+          taste: "Cola · Ice"
+        }
       },
       {
         id: 3,
-        name: "Рюкзак Urban",
+        name: "Pod-система Voopoo Argus P1 Kit",
         price: 1990,
-        description: "Городской рюкзак с отделением для ноутбука.",
-        category: "Аксессуары",
-        sku: "BAG-001"
+        descriptionShort: "Компактная pod-система с быстрой зарядкой и прозрачным корпусом.",
+        descriptionFull: "Девайс с автоматической тягой, USB-C и стильным прозрачным корпусом. Подходит под солевые и обычные жидкости, отличный вариант «на каждый день».",
+        category: "Pod-системы",
+        sku: "POD-ARGUS-P1",
+        specs: {
+          puffs: "зависит от картриджа",
+          nicotine: "под любые жидкости",
+          volume: "2 мл (картридж)",
+          battery: "800 mAh",
+          taste: "—"
+        }
       },
       {
         id: 4,
-        name: "Кроссовки Adidas Run",
-        price: 2790,
-        description: "Лёгкие беговые кроссовки для бега.",
-        category: "Обувь",
-        sku: "SNK-002"
+        name: "Жидкость Ice Mint 30 мл · 20 mg",
+        price: 550,
+        descriptionShort: "Чистая мята с мощным охлаждением для любителей холодка.",
+        descriptionFull: "Прямой мятный вкус без фруктов и десертов. Выраженный холодок и освежающий эффект, отлично заходит на pod-системах.",
+        category: "Жидкости",
+        sku: "LIQ-ICEMINT-30-20",
+        specs: {
+          puffs: "зависит от девайса",
+          nicotine: "20 mg (salt)",
+          volume: "30 мл",
+          battery: "—",
+          taste: "Mint · Strong Ice"
+        }
       },
       {
         id: 5,
-        name: "Худи Basic",
-        price: 1490,
-        description: "Тёплое худи свободного кроя.",
-        category: "Одежда",
-        sku: "HD-001"
+        name: "Жидкость Strawberry Lychee 30 мл · 35 mg",
+        price: 590,
+        descriptionShort: "Сладкая клубника с личи и лёгким охлаждением.",
+        descriptionFull: "Фруктовый микс для тех, кто любит сладость без приторности. Хорошо раскрывается на малой мощности.",
+        category: "Жидкости",
+        sku: "LIQ-STRAW-LYCH-30-35",
+        specs: {
+          puffs: "зависит от девайса",
+          nicotine: "35 mg (salt)",
+          volume: "30 мл",
+          battery: "—",
+          taste: "Strawberry · Lychee · Light Ice"
+        }
       },
       {
         id: 6,
-        name: "Сумка через плечо",
-        price: 890,
-        description: "Компактная сумка для города.",
-        category: "Аксессуары",
-        sku: "BAG-002"
+        name: "Испарители Voopoo PnP 0.8 Ω (5 шт.)",
+        price: 790,
+        descriptionShort: "Набор испарителей для pod-систем Voopoo на тугую затяжку.",
+        descriptionFull: "Стабильная подача вкуса и пара, оптимальны для солевых жидкостей. Подходят к большинству устройств серии PnP.",
+        category: "Комплектующие",
+        sku: "COIL-PNP-08-5PK",
+        specs: {
+          puffs: "до 1000 на один испаритель",
+          nicotine: "рекомендовано salt",
+          volume: "—",
+          battery: "—",
+          taste: "—"
+        }
       }
-      // сюда добавляй свои реальные товары
     ];
 
-    // ========= ЛОГИКА ФИЛЬТРОВ / СОРТА / ПОКУПКИ =========
+    // ========= ЛОГИКА =========
     const productsContainer = document.getElementById("products");
     const categoryBar = document.getElementById("categoryBar");
     const searchInput = document.getElementById("searchInput");
@@ -391,10 +564,16 @@
     const counterEl = document.getElementById("counter");
     const moreBtn = document.getElementById("moreBtn");
 
+    const listView = document.getElementById("listView");
+    const detailView = document.getElementById("detailView");
+    const detailCard = document.getElementById("detailCard");
+    const backBtn = document.getElementById("backBtn");
+
     let activeCategory = "Все";
     let sortMode = "default";
     let visibleCount = 8;
     const PAGE_SIZE = 8;
+    let currentDetail = null;
 
     function getCategories() {
       const set = new Set();
@@ -471,12 +650,13 @@
       slice.forEach((p) => {
         const card = document.createElement("div");
         card.className = "card";
+        card.dataset.id = p.id; // для открытия деталей по клику
 
         card.innerHTML = `
           <div class="card-header">
             <div class="card-title-wrap">
               <div class="card-title">
-                <span>🛒</span>
+                <span>💨</span>
                 <span>${p.name}</span>
               </div>
               <div class="card-sku">ID: ${p.id}${p.sku ? " · " + p.sku : ""}</div>
@@ -484,10 +664,12 @@
             </div>
             <div class="card-price">${p.price} грн</div>
           </div>
-          <div class="card-desc">${p.description || ""}</div>
+          <div class="card-desc">${p.descriptionShort || ""}</div>
           <div class="card-footer">
-            <span>Нажми «Купить», чтобы отправить заявку</span>
-            <button class="btn" data-id="${p.id}">
+            <button class="btn-secondary" data-action="details" data-id="${p.id}">
+              Подробнее
+            </button>
+            <button class="btn" data-action="buy" data-id="${p.id}">
               <span>Купить</span>
               <span>➜</span>
             </button>
@@ -520,12 +702,94 @@
       renderProducts();
     });
 
-    productsContainer.addEventListener("click", (event) => {
-      const btn = event.target.closest("button.btn");
-      if (!btn) return;
+    function openDetail(product) {
+      currentDetail = product;
+      listView.classList.add("hidden");
+      detailView.classList.remove("hidden");
 
-      const id = btn.getAttribute("data-id");
-      const product = products.find((p) => String(p.id) === String(id));
+      const s = product.specs || {};
+      detailCard.innerHTML = `
+        <div class="detail-header">
+          <div class="detail-title-wrap">
+            <div class="detail-title">${product.name}</div>
+            <div class="detail-tags">
+              <span class="tag">${product.category}</span>
+              ${product.sku ? `<span class="tag">Код: ${product.sku}</span>` : ""}
+              <span class="tag">ID: ${product.id}</span>
+            </div>
+          </div>
+          <div class="detail-price">${product.price} грн</div>
+        </div>
+
+        <div>
+          <div class="detail-section-title">Описание</div>
+          <div class="detail-description">
+            ${product.descriptionFull || product.descriptionShort || ""}
+          </div>
+        </div>
+
+        <div>
+          <div class="detail-section-title">Характеристики</div>
+          <div class="detail-specs">
+            ${s.nicotine ? `
+              <div class="spec">
+                <div class="spec-label">Крепость</div>
+                <div class="spec-value">${s.nicotine}</div>
+              </div>` : ""}
+            ${s.puffs ? `
+              <div class="spec">
+                <div class="spec-label">Затяжки</div>
+                <div class="spec-value">${s.puffs}</div>
+              </div>` : ""}
+            ${s.volume ? `
+              <div class="spec">
+                <div class="spec-label">Объём</div>
+                <div class="spec-value">${s.volume}</div>
+              </div>` : ""}
+            ${s.battery ? `
+              <div class="spec">
+                <div class="spec-label">Батарея</div>
+                <div class="spec-value">${s.battery}</div>
+              </div>` : ""}
+            ${s.taste ? `
+              <div class="spec">
+                <div class="spec-label">Вкус / профиль</div>
+                <div class="spec-value">${s.taste}</div>
+              </div>` : ""}
+          </div>
+        </div>
+
+        <div class="detail-footer">
+          <div class="detail-footer-left">
+            После оформления заявки с тобой свяжется продавец для уточнения наличия и деталей заказа.
+          </div>
+          <div class="detail-actions">
+            <button class="btn-secondary" id="detailBackSmall">Каталог</button>
+            <button class="btn" id="detailBuy">Купить</button>
+          </div>
+        </div>
+      `;
+
+      // маленькие кнопки внутри детали
+      document.getElementById("detailBackSmall").onclick = () => {
+        closeDetail();
+      };
+      document.getElementById("detailBuy").onclick = () => {
+        if (!currentDetail) return;
+        sendBuy(currentDetail.id);
+      };
+    }
+
+    function closeDetail() {
+      currentDetail = null;
+      detailView.classList.add("hidden");
+      listView.classList.remove("hidden");
+    }
+
+    backBtn.addEventListener("click", closeDetail);
+
+    function sendBuy(id) {
+      const product = products.find((p) => p.id === id);
       if (!product) return;
 
       if (tg && tg.sendData) {
@@ -536,7 +800,31 @@
         tg.sendData(JSON.stringify(payload));
         tg.close();
       } else {
-        alert("Сейчас это демо. Открой WebApp из Telegram-бота, чтобы оформить заказ.");
+        alert("Открой WebApp из Telegram-бота, чтобы отправить заявку.");
+      }
+    }
+
+    productsContainer.addEventListener("click", (event) => {
+      const btn = event.target.closest("button");
+      const card = event.target.closest(".card");
+
+      if (btn && btn.dataset.action === "buy") {
+        const id = Number(btn.dataset.id);
+        sendBuy(id);
+        return;
+      }
+
+      if (btn && btn.dataset.action === "details") {
+        const id = Number(btn.dataset.id);
+        const product = products.find((p) => p.id === id);
+        if (product) openDetail(product);
+        return;
+      }
+
+      if (card && !btn) {
+        const id = Number(card.dataset.id);
+        const product = products.find((p) => p.id === id);
+        if (product) openDetail(product);
       }
     });
 
