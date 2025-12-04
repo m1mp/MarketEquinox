@@ -596,6 +596,47 @@
       color: #4ade80;
     }
 
+    /* Варианты (вкусы/Омы) */
+
+    .options-block {
+      margin-top: 8px;
+    }
+
+    .options-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .option-pill {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+    }
+
+    .option-pill:hover {
+      transform: translateY(-1px);
+    }
+
+    .option-pill.active {
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      border-color: transparent;
+      color: #f9fafb;
+      box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
+    }
+
+    .option-pill.disabled {
+      opacity: 0.4;
+      cursor: default;
+      text-decoration: line-through;
+    }
+
     /* КОРЗИНА */
 
     .cart-view {
@@ -663,6 +704,11 @@
     .cart-item-name {
       font-size: 13px;
       font-weight: 500;
+    }
+
+    .cart-item-option {
+      font-size: 12px;
+      color: #9ca3af;
     }
 
     .cart-item-price-row {
@@ -904,6 +950,7 @@
     if (tg) tg.ready();
 
     let products = [];
+    // cart: [{id: productId, optionId: string|null, qty: number}]
     let cart = [];
 
     const productsContainer = document.getElementById("products");
@@ -938,9 +985,28 @@
     let visibleCount = 8;
     const PAGE_SIZE = 8;
     let currentDetail = null;
+    let currentOptionId = null;
+
+    function hasOptions(p) {
+      return Array.isArray(p.options) && p.options.length > 0;
+    }
+
+    function getFirstAvailableOption(p) {
+      if (!hasOptions(p)) return null;
+      const available = p.options.find(o => o.inStock !== false);
+      return (available || p.options[0]).id;
+    }
+
+    function findOption(p, optionId) {
+      if (!hasOptions(p) || !optionId) return null;
+      return p.options.find(o => o.id === optionId) || null;
+    }
 
     function isAvailable(product) {
-      return !product || product.inStock !== false;
+      if (hasOptions(product)) {
+        return product.options.some(o => o.inStock !== false);
+      }
+      return product.inStock !== false;
     }
 
     function getCategories() {
@@ -974,7 +1040,6 @@
 
     function getFilteredAndSortedProducts() {
       const query = searchInput.value.trim().toLowerCase();
-
       let list = products.filter((p) => {
         const byCategory = activeCategory === "Все" ? true : p.category === activeCategory;
         const bySearch = query ? p.name.toLowerCase().includes(query) : true;
@@ -1018,17 +1083,33 @@
       cartBtn.textContent = `Корзина (${count} · ${total} грн)`;
     }
 
-    function addToCart(id) {
+    function addToCart(id, optionId = null) {
       const product = products.find((p) => p.id === id);
-      if (product && !isAvailable(product)) {
-        alert("Этого товара сейчас нет в наличии.");
-        return;
+      if (!product) return;
+
+      if (hasOptions(product)) {
+        // если товар с вариантами – обязателен optionId
+        if (!optionId) {
+          openDetail(product);
+          return;
+        }
+        const opt = findOption(product, optionId);
+        if (!opt || opt.inStock === false) {
+          alert("Этот вариант сейчас недоступен.");
+          return;
+        }
+      } else {
+        if (!isAvailable(product)) {
+          alert("Этого товара сейчас нет в наличии.");
+          return;
+        }
       }
-      const existing = cart.find((item) => item.id === id);
+
+      const existing = cart.find((item) => item.id === id && item.optionId === optionId);
       if (existing) {
         existing.qty += 1;
       } else {
-        cart.push({ id, qty: 1 });
+        cart.push({ id, optionId: optionId || null, qty: 1 });
       }
       updateCartButton();
     }
@@ -1131,6 +1212,8 @@
 
     function openDetail(product) {
       currentDetail = product;
+      currentOptionId = hasOptions(product) ? getFirstAvailableOption(product) : null;
+
       listView.classList.add("hidden");
       cartView.classList.add("hidden");
       detailView.classList.remove("hidden");
@@ -1141,8 +1224,6 @@
       const statusClass = available ? "status-available" : "status-out";
       const disabledAttr = available ? "" : "disabled";
       const disabledClass = available ? "" : " btn-disabled";
-      const addLabel = available ? "В корзину" : "Нет в наличии";
-
       const hasDiscount = typeof product.oldPrice === "number" && product.oldPrice > product.price;
       const discountPercent = hasDiscount
         ? Math.round((product.oldPrice - product.price) / product.oldPrice * 100)
@@ -1174,6 +1255,31 @@
         </div>
       ` : "";
 
+      const optionLabel = product.optionLabel || "Вариант";
+
+      const optionsHtml = hasOptions(product)
+        ? `
+        <div class="options-block">
+          <div class="detail-section-title">Выбери ${optionLabel.toLowerCase()}</div>
+          <div class="options-list">
+            ${product.options.map(opt => {
+              const optAvailable = opt.inStock !== false;
+              const cls = [
+                "option-pill",
+                !optAvailable ? "disabled" : "",
+                currentOptionId === opt.id && optAvailable ? "active" : ""
+              ].join(" ").trim();
+              const note = !optAvailable ? " (нет)" : "";
+              return `<div class="${cls}" data-option-id="${opt.id}" data-available="${optAvailable ? "1" : "0"}">${opt.name}${note}</div>`;
+            }).join("")}
+          </div>
+        </div>
+      ` : "";
+
+      const showActions = available && (!hasOptions(product) || currentOptionId !== null);
+      const disabledDetailAttr = showActions ? "" : "disabled";
+      const disabledDetailClass = showActions ? "" : " btn-disabled";
+
       detailCard.innerHTML = `
         <div class="detail-header">
           <div class="detail-title-wrap">
@@ -1199,6 +1305,8 @@
             <img src="${product.image}" alt="${product.name}" class="detail-image">
           </div>
         ` : ""}
+
+        ${optionsHtml}
 
         <div>
           <div class="detail-section-title">Описание</div>
@@ -1246,27 +1354,63 @@
           </div>
           <div class="detail-actions">
             <button class="btn-secondary" id="detailBackSmall">Каталог</button>
-            <button class="btn-secondary${disabledClass}" id="detailAddToCart" ${disabledAttr}>${addLabel}</button>
-            <button class="btn${disabledClass}" id="detailBuy" ${disabledAttr}>Купить</button>
+            <button class="btn-secondary${disabledDetailClass}" id="detailAddToCart" ${disabledDetailAttr}>В корзину</button>
+            <button class="btn${disabledDetailClass}" id="detailBuy" ${disabledDetailAttr}>Купить</button>
           </div>
         </div>
       `;
+
+      // обработка выбора варианта
+      if (hasOptions(product)) {
+        const pills = detailCard.querySelectorAll(".option-pill");
+        pills.forEach(pill => {
+          pill.addEventListener("click", () => {
+            const availableAttr = pill.dataset.available;
+            if (availableAttr !== "1") return;
+            const optId = pill.dataset.optionId;
+            currentOptionId = optId;
+
+            pills.forEach(p => p.classList.remove("active"));
+            pill.classList.add("active");
+
+            const addBtn = document.getElementById("detailAddToCart");
+            const buyBtn = document.getElementById("detailBuy");
+            if (addBtn) {
+              addBtn.disabled = false;
+              addBtn.classList.remove("btn-disabled");
+            }
+            if (buyBtn) {
+              buyBtn.disabled = false;
+              buyBtn.classList.remove("btn-disabled");
+            }
+          });
+        });
+      }
 
       document.getElementById("detailBackSmall").onclick = () => {
         closeDetail();
       };
       document.getElementById("detailAddToCart").onclick = () => {
         if (!currentDetail) return;
-        addToCart(currentDetail.id);
+        if (hasOptions(currentDetail) && !currentOptionId) {
+          alert("Сначала выбери вариант.");
+          return;
+        }
+        addToCart(currentDetail.id, currentOptionId);
       };
       document.getElementById("detailBuy").onclick = () => {
         if (!currentDetail) return;
-        sendBuy(currentDetail.id);
+        if (hasOptions(currentDetail) && !currentOptionId) {
+          alert("Сначала выбери вариант.");
+          return;
+        }
+        sendBuy(currentDetail.id, currentOptionId);
       };
     }
 
     function closeDetail() {
       currentDetail = null;
+      currentOptionId = null;
       detailView.classList.add("hidden");
       cartView.classList.add("hidden");
       listView.classList.remove("hidden");
@@ -1303,12 +1447,14 @@
       cart.forEach((item) => {
         const p = products.find((x) => x.id === item.id);
         if (!p) return;
-
         const lineTotal = p.price * item.qty;
+        const opt = findOption(p, item.optionId);
+        const optionName = opt ? `${p.optionLabel || "Вариант"}: ${opt.name}` : "";
 
         const el = document.createElement("div");
         el.className = "cart-item";
         el.dataset.id = item.id;
+        el.dataset.optionId = item.optionId || "";
 
         el.innerHTML = `
           ${p.image ? `
@@ -1318,6 +1464,7 @@
           ` : ""}
           <div class="cart-item-main">
             <div class="cart-item-name">${p.name}</div>
+            ${optionName ? `<div class="cart-item-option">${optionName}</div>` : ""}
             <div class="cart-item-price-row">
               <span class="cart-item-price-single">${p.price} грн / шт.</span>
               <span class="cart-item-price-total">${lineTotal} грн</span>
@@ -1334,7 +1481,6 @@
             </div>
           </div>
         `;
-
         cartItemsEl.appendChild(el);
       });
 
@@ -1350,7 +1496,8 @@
       const itemEl = event.target.closest(".cart-item");
       if (!itemEl) return;
       const id = Number(itemEl.dataset.id);
-      const cartItem = cart.find((it) => it.id === id);
+      const optionId = itemEl.dataset.optionId || null;
+      const cartItem = cart.find((it) => it.id === id && (it.optionId || null) === optionId);
       if (!cartItem) return;
 
       if (action === "inc") {
@@ -1358,7 +1505,7 @@
       } else if (action === "dec") {
         cartItem.qty = Math.max(1, cartItem.qty - 1);
       } else if (action === "remove") {
-        cart = cart.filter((it) => it.id !== id);
+        cart = cart.filter((it) => !(it.id === id && (it.optionId || null) === optionId));
       }
 
       updateCartButton();
@@ -1380,8 +1527,6 @@
       renderCartView();
     });
 
-    // ===== ОТПРАВКА ЗАКАЗА (КОРЗИНА) =====
-
     function sendCartCheckout() {
       const count = getCartCount();
       if (count === 0) {
@@ -1393,7 +1538,15 @@
         .map((item) => {
           const p = products.find((x) => x.id === item.id);
           if (!p || !isAvailable(p)) return null;
-          return { productId: item.id, qty: item.qty };
+          if (hasOptions(p)) {
+            const opt = findOption(p, item.optionId);
+            if (!opt || opt.inStock === false) return null;
+          }
+          return {
+            productId: item.id,
+            optionId: item.optionId || null,
+            qty: item.qty
+          };
         })
         .filter(Boolean);
 
@@ -1422,13 +1575,26 @@
 
       if (btn && btn.dataset.action === "buy") {
         const id = Number(btn.dataset.id);
-        sendBuy(id);
+        const product = products.find((p) => p.id === id);
+        if (!product) return;
+        if (hasOptions(product)) {
+          // заставляем выбрать вкус/Ом
+          openDetail(product);
+        } else {
+          sendBuy(id, null);
+        }
         return;
       }
 
       if (btn && btn.dataset.action === "add_to_cart") {
         const id = Number(btn.dataset.id);
-        addToCart(id);
+        const product = products.find((p) => p.id === id);
+        if (!product) return;
+        if (hasOptions(product)) {
+          openDetail(product);
+        } else {
+          addToCart(id, null);
+        }
         return;
       }
 
@@ -1457,15 +1623,29 @@
 
     // ===== BUY ОДНОГО ТОВАРА =====
 
-    function sendBuy(id) {
+    function sendBuy(id, optionId = null) {
       const product = products.find((p) => p.id === id);
       if (!product) return;
-      if (!isAvailable(product)) {
-        alert("Этого товара сейчас нет в наличии.");
-        return;
+
+      if (hasOptions(product)) {
+        const opt = findOption(product, optionId);
+        if (!opt || opt.inStock === false) {
+          alert("Этот вариант сейчас недоступен.");
+          return;
+        }
+      } else {
+        if (!isAvailable(product)) {
+          alert("Этого товара сейчас нет в наличии.");
+          return;
+        }
       }
+
       if (tg && tg.sendData) {
-        const payload = { action: "buy", productId: product.id };
+        const payload = {
+          action: "buy",
+          productId: product.id,
+          optionId: optionId || null
+        };
         tg.sendData(JSON.stringify(payload));
         tg.close();
       } else {
