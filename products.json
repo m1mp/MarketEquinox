@@ -1,19 +1,19 @@
 [
   {
     "id": 1,
-    "name": "Одноразка Elfff Bar 600 Mango Ice",
-    "price": 350,
-    "descriptionShort": "Классический Elf Bar на 600 затяжек с манго и лёгким холодком.",
-    "descriptionFull": "Сбалансированный вкус спелого манго с умеренным охлаждением. Подойдёт и новичкам, и тем, кто любит фруктовые миксы без лишней сладости.",
-    "category": "Одноразки",
-    "sku": "DISP-ELF-600-MGICE",
-    "image": "img/elf-bar-1500-golubika-blueberry.jpg",  
+    "name": "картридж OXVA NeXLIM 0.6 Ом 4 мл",
+    "price": 180,
+    "descriptionShort": "Змінний картридж OXVA NeXLIM 0.6 Ом 4 мл",
+    "descriptionFull": "Картридж OXVA NeXLIM 0.6 Ом 4 мл",
+    "category": "Комплектующие",
+    "sku": "OXVANEXLIM064ML",
+    "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",  
     "specs": {
-      "puffs": "до 600",
-      "nicotine": "2% (20 mg/ml)",
-      "volume": "2 мл",
-      "battery": "550 mAh",
-      "taste": "Mango · Ice"
+      "puffs": "-",
+      "nicotine": "-",
+      "volume": "4 мл",
+      "battery": "-",
+      "taste": "-"
     }
   },
   {
