@@ -528,10 +528,14 @@
       white-space: nowrap;
     }
 
-    /* Похожие товары */
+    /* Похожие товары — отдельный блок */
 
     .similar-section {
-      margin-top: 10px;
+      margin-top: 16px;
+      padding: 10px 10px 8px;
+      border-radius: 16px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.96);
     }
 
     .similar-list {
@@ -549,13 +553,14 @@
       padding: 6px 8px;
       border-radius: 14px;
       border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.95);
+      background: rgba(15, 23, 42, 0.98);
       cursor: pointer;
-      transition: border-color 0.12s ease, transform 0.08s ease;
+      transition: border-color 0.12s ease, transform 0.08s ease, background 0.12s ease;
     }
 
     .similar-card:hover {
       border-color: rgba(56, 189, 248, 0.9);
+      background: rgba(30, 64, 175, 0.3);
       transform: translateY(-1px);
     }
 
@@ -731,7 +736,6 @@
       tg.ready();
     }
 
-    // товары грузим из products.json
     let products = [];
     let cart = [];
 
@@ -759,7 +763,6 @@
     let currentDetail = null;
 
     function isAvailable(product) {
-      // если inStock === false — нет в наличии, иначе считаем что есть
       return !product || product.inStock !== false;
     }
 
@@ -798,11 +801,8 @@
       const query = searchInput.value.trim().toLowerCase();
 
       let list = products.filter((p) => {
-        const byCategory =
-          activeCategory === "Все" ? true : p.category === activeCategory;
-        const bySearch = query
-          ? p.name.toLowerCase().includes(query)
-          : true;
+        const byCategory = activeCategory === "Все" ? true : p.category === activeCategory;
+        const bySearch = query ? p.name.toLowerCase().includes(query) : true;
         return byCategory && bySearch;
       });
 
@@ -813,9 +813,7 @@
       } else if (sortMode === "newest") {
         list = list.slice().sort((a, b) => b.id - a.id);
       } else if (sortMode === "name_asc") {
-        list = list.slice().sort((a, b) =>
-          a.name.localeCompare(b.name, "ru")
-        );
+        list = list.slice().sort((a, b) => a.name.localeCompare(b.name, "ru"));
       }
 
       return list;
@@ -829,9 +827,7 @@
       let total = 0;
       cart.forEach((ci) => {
         const p = products.find((x) => x.id === ci.id);
-        if (p) {
-          total += p.price * ci.qty;
-        }
+        if (p) total += p.price * ci.qty;
       });
       return total;
     }
@@ -941,12 +937,7 @@
         productsContainer.appendChild(card);
       });
 
-      if (all.length > slice.length) {
-        moreBtn.style.display = "inline-flex";
-      } else {
-        moreBtn.style.display = "none";
-      }
-
+      moreBtn.style.display = all.length > slice.length ? "inline-flex" : "none";
       updateCartButton();
     }
 
@@ -1119,10 +1110,7 @@
       }
 
       if (tg && tg.sendData) {
-        const payload = {
-          action: "buy",
-          productId: product.id
-        };
+        const payload = { action: "buy", productId: product.id };
         tg.sendData(JSON.stringify(payload));
         tg.close();
       } else {
@@ -1140,13 +1128,8 @@
       const itemsPayload = cart
         .map((item) => {
           const p = products.find((x) => x.id === item.id);
-          if (!p || !isAvailable(p)) {
-            return null;
-          }
-          return {
-            productId: item.id,
-            qty: item.qty
-          };
+          if (!p || !isAvailable(p)) return null;
+          return { productId: item.id, qty: item.qty };
         })
         .filter(Boolean);
 
@@ -1156,10 +1139,7 @@
       }
 
       if (tg && tg.sendData) {
-        const payload = {
-          action: "cart_checkout",
-          items: itemsPayload
-        };
+        const payload = { action: "cart_checkout", items: itemsPayload };
         tg.sendData(JSON.stringify(payload));
         tg.close();
       } else {
@@ -1199,7 +1179,7 @@
       }
     });
 
-    // клики по "похожим товарам" в деталке
+    // клики по "похожим товарам"
     detailCard.addEventListener("click", (event) => {
       const simCard = event.target.closest(".similar-card");
       if (!simCard) return;
@@ -1220,7 +1200,6 @@
         ageGateEl.classList.remove("hidden");
         return false;
       } catch (e) {
-        // если localStorage недоступен — показываем гейт каждый раз
         ageGateEl.classList.remove("hidden");
         return false;
       }
@@ -1234,36 +1213,29 @@
     });
 
     btnUnder18.addEventListener("click", () => {
-      // закрываем WebApp или показываем заглушку
       if (tg && tg.close) {
         tg.close();
       } else {
-        document.body.innerHTML = "<div style='padding:20px;color:#f9fafb;background:#020617;font-family:system-ui'>Доступ к магазину только для лиц 18+.</div>";
+        document.body.innerHTML =
+          "<div style='padding:20px;color:#f9fafb;background:#020617;font-family:system-ui'>Доступ к магазину только для лиц 18+.</div>";
       }
     });
 
     async function loadProducts() {
       try {
         const res = await fetch("products.json");
-        if (!res.ok) {
-          throw new Error("HTTP " + res.status);
-        }
+        if (!res.ok) throw new Error("HTTP " + res.status);
         products = await res.json();
         renderCategories();
         renderProducts();
       } catch (e) {
         console.error("Ошибка загрузки products.json", e);
         const app = document.getElementById("products");
-        if (app) {
-          app.innerHTML = "<p>Не удалось загрузить каталог товаров 😔</p>";
-        }
-        if (counterEl) {
-          counterEl.textContent = "";
-        }
+        if (app) app.innerHTML = "<p>Не удалось загрузить каталог товаров 😔</p>";
+        if (counterEl) counterEl.textContent = "";
       }
     }
 
-    // сначала проверим age gate, параллельно можем грузить товары
     checkAgeGate();
     loadProducts();
   </script>
