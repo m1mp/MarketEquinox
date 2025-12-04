@@ -201,11 +201,28 @@
       width: fit-content;
     }
 
-    .card-price {
+    .card-price-box {
+      text-align: right;
+    }
+
+    .card-price-old {
+      font-size: 12px;
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    .card-price-main-row {
+      margin-top: 2px;
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    .card-price-main {
       font-size: 16px;
       font-weight: 700;
       color: #4ade80;
-      text-align: right;
       white-space: nowrap;
     }
 
@@ -343,7 +360,25 @@
       color: #e5e7eb;
     }
 
-    .detail-price {
+    .detail-price-box {
+      text-align: right;
+    }
+
+    .detail-price-old {
+      font-size: 13px;
+      color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    .detail-price-main-row {
+      margin-top: 2px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .detail-price-main {
       font-size: 19px;
       font-weight: 700;
       color: #4ade80;
@@ -479,6 +514,18 @@
       border-color: rgba(248, 113, 113, 0.8);
       color: #fecaca;
       background: rgba(127, 29, 29, 0.4);
+    }
+
+    /* Бейдж скидки */
+
+    .discount-badge {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.15);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.8);
+      white-space: nowrap;
     }
 
     .hidden {
@@ -702,6 +749,11 @@
         const disabledAttr = available ? "" : "disabled";
         const disabledClass = available ? "" : " btn-disabled";
 
+        const hasDiscount = typeof p.oldPrice === "number" && p.oldPrice > p.price;
+        const discountPercent = hasDiscount
+          ? Math.round((p.oldPrice - p.price) / p.oldPrice * 100)
+          : 0;
+
         card.innerHTML = `
           <div class="card-main">
             ${p.image ? `
@@ -722,7 +774,13 @@
                     <span class="status-badge ${statusClass}">${statusText}</span>
                   </div>
                 </div>
-                <div class="card-price">${p.price} грн</div>
+                <div class="card-price-box">
+                  ${hasDiscount ? `<div class="card-price-old">${p.oldPrice} грн</div>` : ""}
+                  <div class="card-price-main-row">
+                    <span class="card-price-main">${p.price} грн</span>
+                    ${hasDiscount ? `<span class="discount-badge">-${discountPercent}%</span>` : ""}
+                  </div>
+                </div>
               </div>
               <div class="card-desc">${p.descriptionShort || ""}</div>
               <div class="card-footer">
@@ -782,6 +840,11 @@
       const disabledClass = available ? "" : " btn-disabled";
       const addLabel = available ? "В корзину" : "Нет в наличии";
 
+      const hasDiscount = typeof product.oldPrice === "number" && product.oldPrice > product.price;
+      const discountPercent = hasDiscount
+        ? Math.round((product.oldPrice - product.price) / product.oldPrice * 100)
+        : 0;
+
       detailCard.innerHTML = `
         <div class="detail-header">
           <div class="detail-title-wrap">
@@ -791,9 +854,15 @@
               ${product.sku ? `<span class="tag">Код: ${product.sku}</span>` : ""}
               <span class="tag">ID: ${product.id}</span>
               <span class="tag status-badge ${statusClass}">${statusText}</span>
+              ${hasDiscount ? `<span class="tag discount-badge">Скидка ${discountPercent}%</span>` : ""}
             </div>
           </div>
-          <div class="detail-price">${product.price} грн</div>
+          <div class="detail-price-box">
+            ${hasDiscount ? `<div class="detail-price-old">${product.oldPrice} грн</div>` : ""}
+            <div class="detail-price-main-row">
+              <span class="detail-price-main">${product.price} грн</span>
+            </div>
+          </div>
         </div>
 
         ${product.image ? `
