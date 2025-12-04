@@ -7,6 +7,7 @@
     "descriptionFull": "Картридж OXVA NeXLIM 0.6 Ом 4 мл",
     "category": "Комплектующие",
     "sku": "OXVANEXLIM064ML",
+    "inStock": false,
     "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",  
     "specs": {
       "puffs": "-",
