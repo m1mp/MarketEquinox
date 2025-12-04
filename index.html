@@ -23,23 +23,76 @@
     }
 
     .app {
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
     }
 
     .header {
-      text-align: center;
       margin-bottom: 16px;
     }
 
-    .header h1 {
+    .header-title {
       font-size: 24px;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
-    .header p {
-      font-size: 14px;
+    .header-sub {
+      font-size: 13px;
       color: #6b7280;
+    }
+
+    .top-bar {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .cat-btn {
+      flex-shrink: 0;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .cat-btn.active {
+      background: #111827;
+      color: #ffffff;
+      border-color: #111827;
+    }
+
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-input {
+      flex: 1;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 6px 12px;
+      font-size: 13px;
+      outline: none;
+      background: #f9fafb;
+    }
+
+    .counter {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 4px;
     }
 
     .products {
@@ -47,6 +100,7 @@
       flex-direction: column;
       gap: 12px;
       margin-top: 16px;
+      margin-bottom: 16px;
     }
 
     .card {
@@ -54,33 +108,50 @@
       border-radius: 12px;
       padding: 12px 14px;
       box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 600;
-      margin-bottom: 4px;
+    }
+
+    .card-category {
+      font-size: 11px;
+      color: #6b7280;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f3f4f6;
     }
 
     .card-price {
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 600;
       color: #10b981;
-      margin-bottom: 6px;
     }
 
     .card-desc {
       font-size: 13px;
       color: #6b7280;
-      margin-bottom: 10px;
+      margin-top: 4px;
     }
 
     .card-footer {
+      margin-top: 8px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      color: #6b7280;
+      font-size: 11px;
+      color: #9ca3af;
     }
 
     .btn {
@@ -98,8 +169,8 @@
     }
 
     .hint {
-      margin-top: 16px;
-      font-size: 12px;
+      margin-top: 4px;
+      font-size: 11px;
       color: #9ca3af;
       text-align: center;
     }
@@ -108,8 +179,23 @@
 <body>
   <div class="app">
     <div class="header">
-      <h1>Мой магазин</h1>
-      <p>Демо-витрина WebApp</p>
+      <div class="header-title">Мой магазин</div>
+      <div class="header-sub">Выбери категорию или найди товар по названию</div>
+    </div>
+
+    <div class="top-bar">
+      <div id="categoryBar" class="categories"></div>
+
+      <div class="search-wrap">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Поиск по названию..."
+        />
+      </div>
+
+      <div id="counter" class="counter"></div>
     </div>
 
     <div id="products" class="products"></div>
@@ -125,44 +211,129 @@
       tg.ready();
     }
 
-    // Товары
+    // ======= ДАННЫЕ ТОВАРОВ =======
+    // Можно смело расширять список, просто добавляя новые объекты
     const products = [
       {
         id: 1,
         name: "Кроссовки Nike Air",
         price: 2999,
-        description: "Удобные кроссовки для повседневной носки."
+        description: "Удобные кроссовки для повседневной носки.",
+        category: "Обувь"
       },
       {
         id: 2,
         name: "Футболка Oversize",
         price: 999,
-        description: "Чёрная футболка oversize, 100% хлопок."
+        description: "Чёрная футболка oversize, 100% хлопок.",
+        category: "Одежда"
       },
       {
         id: 3,
         name: "Рюкзак Urban",
         price: 1990,
-        description: "Городской рюкзак с отделением для ноутбука."
+        description: "Городской рюкзак с отделением для ноутбука.",
+        category: "Аксессуары"
+      },
+      {
+        id: 4,
+        name: "Кроссовки Adidas Run",
+        price: 2790,
+        description: "Лёгкие беговые кроссовки.",
+        category: "Обувь"
+      },
+      {
+        id: 5,
+        name: "Худи Basic",
+        price: 1490,
+        description: "Тёплое худи свободного кроя.",
+        category: "Одежда"
+      },
+      {
+        id: 6,
+        name: "Сумка через плечо",
+        price: 890,
+        description: "Компактная сумка для города.",
+        category: "Аксессуары"
       }
     ];
 
-    function renderProducts() {
-      const container = document.getElementById("products");
-      container.innerHTML = "";
+    // ======= ЭЛЕМЕНТЫ DOM =======
+    const productsContainer = document.getElementById("products");
+    const categoryBar = document.getElementById("categoryBar");
+    const searchInput = document.getElementById("searchInput");
+    const counterEl = document.getElementById("counter");
 
-      if (!products.length) {
-        container.innerHTML = "<p>Пока нет ни одного товара 😔</p>";
+    let activeCategory = "Все";
+
+    // ======= КАТЕГОРИИ =======
+    function getCategories() {
+      const set = new Set();
+      products.forEach((p) => set.add(p.category));
+      return ["Все", ...Array.from(set)];
+    }
+
+    function renderCategories() {
+      const categories = getCategories();
+      categoryBar.innerHTML = "";
+
+      categories.forEach((cat) => {
+        const btn = document.createElement("button");
+        btn.className = "cat-btn" + (cat === activeCategory ? " active" : "");
+        btn.textContent = cat;
+        btn.dataset.category = cat;
+        categoryBar.appendChild(btn);
+      });
+    }
+
+    categoryBar.addEventListener("click", (event) => {
+      const btn = event.target.closest(".cat-btn");
+      if (!btn) return;
+      const cat = btn.dataset.category;
+      if (!cat) return;
+
+      activeCategory = cat;
+      renderCategories();
+      renderProducts();
+    });
+
+    // ======= ФИЛЬТР ТОВАРОВ =======
+    function getFilteredProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      return products.filter((p) => {
+        const byCategory =
+          activeCategory === "Все" ? true : p.category === activeCategory;
+        const bySearch = query
+          ? p.name.toLowerCase().includes(query)
+          : true;
+        return byCategory && bySearch;
+      });
+    }
+
+    // ======= ОТРИСОВКА ТОВАРОВ =======
+    function renderProducts() {
+      const list = getFilteredProducts();
+      productsContainer.innerHTML = "";
+
+      counterEl.textContent = `Найдено товаров: ${list.length} из ${products.length}`;
+
+      if (!list.length) {
+        productsContainer.innerHTML = "<p>По твоему запросу ничего не найдено 😔</p>";
         return;
       }
 
-      products.forEach((p) => {
+      list.forEach((p) => {
         const card = document.createElement("div");
         card.className = "card";
 
         card.innerHTML = `
-          <div class="card-title">${p.id}. ${p.name}</div>
-          <div class="card-price">${p.price} грн</div>
+          <div class="card-header">
+            <div>
+              <div class="card-title">${p.name}</div>
+              <div class="card-category">${p.category}</div>
+            </div>
+            <div class="card-price">${p.price} грн</div>
+          </div>
           <div class="card-desc">${p.description || ""}</div>
           <div class="card-footer">
             <span>ID товара: ${p.id}</span>
@@ -170,33 +341,38 @@
           </div>
         `;
 
-        container.appendChild(card);
-      });
-
-      // Один обработчик на все кнопки
-      container.addEventListener("click", (event) => {
-        const btn = event.target.closest("button.btn");
-        if (!btn) return;
-
-        const id = btn.getAttribute("data-id");
-        const product = products.find((p) => String(p.id) === String(id));
-        if (!product) return;
-
-        if (tg && tg.sendData) {
-          // Отправляем данные в бота
-          const payload = {
-            action: "buy",
-            productId: product.id
-          };
-          tg.sendData(JSON.stringify(payload));
-          tg.close(); // можно закрыть WebApp после клика
-        } else {
-          // Если открыт не в Telegram (просто в браузере)
-          alert(`Сейчас это демо.\nВ Telegram-боте можно купить товар с ID ${product.id}.`);
-        }
+        productsContainer.appendChild(card);
       });
     }
 
+    // Поиск
+    searchInput.addEventListener("input", () => {
+      renderProducts();
+    });
+
+    // Обработка клика "Купить"
+    productsContainer.addEventListener("click", (event) => {
+      const btn = event.target.closest("button.btn");
+      if (!btn) return;
+
+      const id = btn.getAttribute("data-id");
+      const product = products.find((p) => String(p.id) === String(id));
+      if (!product) return;
+
+      if (tg && tg.sendData) {
+        const payload = {
+          action: "buy",
+          productId: product.id
+        };
+        tg.sendData(JSON.stringify(payload));
+        tg.close();
+      } else {
+        alert(`Сейчас это демо.\nВ Telegram-боте можно купить товар с ID ${product.id}.`);
+      }
+    });
+
+    // Стартовая отрисовка
+    renderCategories();
     renderProducts();
   </script>
 </body>
