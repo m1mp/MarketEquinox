@@ -74,12 +74,12 @@
       padding-bottom: 4px;
     }
 
-    .cat-btn {
+        .cat-btn {
       flex-shrink: 0;
       border-radius: 999px;
       padding: 6px 12px;
       font-size: 13px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
+      border: 1px solid rgba(34, 197, 94, 0.4); /* зелёный контур */
       background: rgba(15, 23, 42, 0.9);
       cursor: pointer;
       white-space: nowrap;
@@ -88,16 +88,17 @@
     }
 
     .cat-btn:hover {
-      background: rgba(30, 64, 175, 0.9);
-      border-color: rgba(59, 130, 246, 0.9);
+      background: rgba(34, 197, 94, 0.18);              /* мягкий зелёный фон */
+      border-color: rgba(34, 197, 94, 0.9);             /* зелёная рамка */
     }
 
     .cat-btn.active {
-      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      background: linear-gradient(135deg, #22c55e, #16a34a); /* как основная кнопка */
       border-color: transparent;
       color: #f9fafb;
       box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.8);
     }
+
 
     .filters-row {
       display: flex;
@@ -159,11 +160,12 @@
       transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease, background 0.15s ease;
     }
 
-    .card:hover {
+        .card:hover {
       transform: translateY(-2px);
       box-shadow: 0 16px 40px rgba(15, 23, 42, 1);
-      border-color: rgba(56, 189, 248, 0.9);
+      border-color: rgba(34, 197, 94, 0.8); /* зелёный контур вместо голубого */
     }
+
 
     .card-header {
       display: flex;
@@ -558,11 +560,12 @@
       transition: border-color 0.12s ease, transform 0.08s ease, background 0.12s ease;
     }
 
-    .similar-card:hover {
-      border-color: rgba(56, 189, 248, 0.9);
-      background: rgba(30, 64, 175, 0.3);
+        .similar-card:hover {
+      border-color: rgba(34, 197, 94, 0.9);          /* зелёный */
+      background: rgba(22, 163, 74, 0.18);           /* зелёный фон */
       transform: translateY(-1px);
     }
+
 
     .similar-image-wrap {
       width: 40px;
