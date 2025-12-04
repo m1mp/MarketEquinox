@@ -218,10 +218,12 @@
     .card-footer {
       margin-top: 8px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
+      gap: 8px;
       align-items: center;
       font-size: 11px;
       color: #6b7280;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -266,7 +268,9 @@
     .bottom-actions {
       display: flex;
       justify-content: center;
+      gap: 8px;
       margin-bottom: 8px;
+      flex-wrap: wrap;
     }
 
     .hint {
@@ -276,7 +280,7 @@
       text-align: center;
     }
 
-    /* ===== ДЕТАЛЬНАЯ СТРАНИЦА ===== */
+    /* ДЕТАЛЬНАЯ СТРАНИЦА */
 
     .detail {
       margin-top: 16px;
@@ -295,6 +299,7 @@
       justify-content: space-between;
       gap: 12px;
       align-items: flex-start;
+      flex-wrap: wrap;
     }
 
     .detail-title-wrap {
@@ -476,10 +481,11 @@
 
       <div class="bottom-actions">
         <button id="moreBtn" class="btn btn-secondary" style="display:none;">Показать ещё</button>
+        <button id="cartBtn" class="btn" style="display:none;">Корзина (0)</button>
       </div>
 
       <div class="hint">
-        Нажми на карточку для деталей или сразу «Купить» — заявка уйдёт боту в Telegram.
+        Нажми «В корзину» или «Купить» — заявка уйдёт боту в Telegram.
       </div>
     </div>
 
@@ -499,8 +505,9 @@
       tg.ready();
     }
 
-    // Товары будут загружены из products.json
+    // товары грузим из products.json
     let products = [];
+    let cart = [];
 
     const productsContainer = document.getElementById("products");
     const categoryBar = document.getElementById("categoryBar");
@@ -508,6 +515,7 @@
     const sortSelect = document.getElementById("sortSelect");
     const counterEl = document.getElementById("counter");
     const moreBtn = document.getElementById("moreBtn");
+    const cartBtn = document.getElementById("cartBtn");
 
     const listView = document.getElementById("listView");
     const detailView = document.getElementById("detailView");
@@ -578,6 +586,43 @@
       return list;
     }
 
+    function getCartCount() {
+      return cart.reduce((sum, item) => sum + item.qty, 0);
+    }
+
+    function getCartTotal() {
+      let total = 0;
+      cart.forEach((ci) => {
+        const p = products.find((x) => x.id === ci.id);
+        if (p) {
+          total += p.price * ci.qty;
+        }
+      });
+      return total;
+    }
+
+    function updateCartButton() {
+      const count = getCartCount();
+      if (count === 0) {
+        cartBtn.style.display = "none";
+        return;
+      }
+      const total = getCartTotal();
+      cartBtn.style.display = "inline-flex";
+      cartBtn.textContent = `Оформить корзину (${count} · ${total} грн)`;
+    }
+
+    function addToCart(id) {
+      const existing = cart.find((item) => item.id === id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ id, qty: 1 });
+      }
+      updateCartButton();
+      // можно без alert, чтобы не раздражать; оставлю тихо
+    }
+
     function renderProducts() {
       const all = getFilteredAndSortedProducts();
       const slice = all.slice(0, visibleCount);
@@ -621,6 +666,9 @@
                 <button class="btn-secondary" data-action="details" data-id="${p.id}">
                   Подробнее
                 </button>
+                <button class="btn-secondary" data-action="add_to_cart" data-id="${p.id}">
+                  В корзину
+                </button>
                 <button class="btn" data-action="buy" data-id="${p.id}">
                   <span>Купить</span>
                   <span>➜</span>
@@ -638,6 +686,8 @@
       } else {
         moreBtn.style.display = "none";
       }
+
+      updateCartButton();
     }
 
     searchInput.addEventListener("input", () => {
@@ -725,6 +775,7 @@
           </div>
           <div class="detail-actions">
             <button class="btn-secondary" id="detailBackSmall">Каталог</button>
+            <button class="btn-secondary" id="detailAddToCart">В корзину</button>
             <button class="btn" id="detailBuy">Купить</button>
           </div>
         </div>
@@ -732,6 +783,10 @@
 
       document.getElementById("detailBackSmall").onclick = () => {
         closeDetail();
+      };
+      document.getElementById("detailAddToCart").onclick = () => {
+        if (!currentDetail) return;
+        addToCart(currentDetail.id);
       };
       document.getElementById("detailBuy").onclick = () => {
         if (!currentDetail) return;
@@ -763,6 +818,31 @@
       }
     }
 
+    function sendCartCheckout() {
+      const count = getCartCount();
+      if (count === 0) {
+        alert("Корзина пуста");
+        return;
+      }
+      const itemsPayload = cart.map((item) => ({
+        productId: item.id,
+        qty: item.qty
+      }));
+
+      if (tg && tg.sendData) {
+        const payload = {
+          action: "cart_checkout",
+          items: itemsPayload
+        };
+        tg.sendData(JSON.stringify(payload));
+        tg.close();
+      } else {
+        alert("Открой WebApp из Telegram-бота, чтобы отправить заявку.");
+      }
+    }
+
+    cartBtn.addEventListener("click", sendCartCheckout);
+
     productsContainer.addEventListener("click", (event) => {
       const btn = event.target.closest("button");
       const card = event.target.closest(".card");
@@ -770,6 +850,12 @@
       if (btn && btn.dataset.action === "buy") {
         const id = Number(btn.dataset.id);
         sendBuy(id);
+        return;
+      }
+
+      if (btn && btn.dataset.action === "add_to_cart") {
+        const id = Number(btn.dataset.id);
+        addToCart(id);
         return;
       }
 
