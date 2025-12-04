@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Одноразка Elf Bar 600 Mango Ice",
+    "price": 350,
+    "descriptionShort": "Классический Elf Bar на 600 затяжек с манго и лёгким холодком.",
+    "descriptionFull": "Сбалансированный вкус спелого манго с умеренным охлаждением. Подойдёт и новичкам, и тем, кто любит фруктовые миксы без лишней сладости.",
+    "category": "Одноразки",
+    "sku": "DISP-ELF-600-MGICE",
+    "specs": {
+      "puffs": "до 600",
+      "nicotine": "2% (20 mg/ml)",
+      "volume": "2 мл",
+      "battery": "550 mAh",
+      "taste": "Mango · Ice"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Одноразка HQD Cuvie Plus Cola Ice",
+    "price": 420,
+    "descriptionShort": "Увеличенный объём и яркий вкус холодной колы.",
+    "descriptionFull": "Газированная кола со льдом — яркий традиционный вкус. Плотный пар, выраженный хит и приятное послевкусие.",
+    "category": "Одноразки",
+    "sku": "DISP-HQD-CPLUS-COLA",
+    "specs": {
+      "puffs": "до 1200",
+      "nicotine": "5% (50 mg/ml)",
+      "volume": "5 мл",
+      "battery": "950 mAh",
+      "taste": "Cola · Ice"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Pod-система Voopoo Argus P1 Kit",
+    "price": 1990,
+    "descriptionShort": "Компактная pod-система с быстрой зарядкой и прозрачным корпусом.",
+    "descriptionFull": "Девайс с автоматической тягой, USB-C и стильным прозрачным корпусом. Подходит под солевые и обычные жидкости, отличный вариант «на каждый день».",
+    "category": "Pod-системы",
+    "sku": "POD-ARGUS-P1",
+    "specs": {
+      "puffs": "зависит от картриджа",
+      "nicotine": "под любые жидкости",
+      "volume": "2 мл (картридж)",
+      "battery": "800 mAh",
+      "taste": "—"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Жидкость Ice Mint 30 мл · 20 mg",
+    "price": 550,
+    "descriptionShort": "Чистая мята с мощным охлаждением для любителей холодка.",
+    "descriptionFull": "Прямой мятный вкус без фруктов и десертов. Выраженный холодок и освежающий эффект, отлично заходит на pod-системах.",
+    "category": "Жидкости",
+    "sku": "LIQ-ICEMINT-30-20",
+    "specs": {
+      "puffs": "зависит от девайса",
+      "nicotine": "20 mg (salt)",
+      "volume": "30 мл",
+      "battery": "—",
+      "taste": "Mint · Strong Ice"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Жидкость Strawberry Lychee 30 мл · 35 mg",
+    "price": 590,
+    "descriptionShort": "Сладкая клубника с личи и лёгким охлаждением.",
+    "descriptionFull": "Фруктовый микс для тех, кто любит сладость без приторности. Хорошо раскрывается на малой мощности.",
+    "category": "Жидкости",
+    "sku": "LIQ-STRAW-LYCH-30-35",
+    "specs": {
+      "puffs": "зависит от девайса",
+      "nicotine": "35 mg (salt)",
+      "volume": "30 мл",
+      "battery": "—",
+      "taste": "Strawberry · Lychee · Light Ice"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Испарители Voopoo PnP 0.8 Ω (5 шт.)",
+    "price": 790,
+    "descriptionShort": "Набор испарителей для pod-систем Voopoo на тугую затяжку.",
+    "descriptionFull": "Стабильная подача вкуса и пара, оптимальны для солевых жидкостей. Подходят к большинству устройств серии PnP.",
+    "category": "Комплектующие",
+    "sku": "COIL-PNP-08-5PK",
+    "specs": {
+      "puffs": "до 1000 на один испаритель",
+      "nicotine": "рекомендовано salt",
+      "volume": "—",
+      "battery": "—",
+      "taste": "—"
+    }
+  }
+]
