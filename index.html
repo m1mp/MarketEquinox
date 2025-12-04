@@ -388,6 +388,50 @@
       flex-wrap: wrap;
     }
 
+    /* Картинка в списке */
+    .card-main {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .card-image-wrap {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.2), rgba(15, 23, 42, 1));
+    }
+
+    .card-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    /* Картинка на странице товара */
+    .detail-image-wrap {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.2), rgba(15, 23, 42, 1));
+      margin-bottom: 10px;
+    }
+
+    .detail-image {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
     .hidden {
       display: none !important;
     }
@@ -404,7 +448,7 @@
       <div class="header-sub">Выбери устройство, изучи характеристики и оформи заявку в один клик</div>
     </div>
 
-    <!-- ===== ЛИСТИНГ ===== -->
+    <!-- ЛИСТИНГ -->
     <div id="listView">
       <div class="top-bar">
         <div id="categoryBar" class="categories"></div>
@@ -439,7 +483,7 @@
       </div>
     </div>
 
-    <!-- ===== ДЕТАЛЬНЫЙ ТОВАР ===== -->
+    <!-- ДЕТАЛЬНЫЙ ТОВАР -->
     <div id="detailView" class="hidden">
       <button id="backBtn" class="btn btn-secondary" style="margin-bottom:10px;">
         ← Назад к каталогу
@@ -455,108 +499,9 @@
       tg.ready();
     }
 
-    // ========= ТОВАРЫ ВЕЙП-НИШИ =========
-    // ВАЖНО: id должны совпадать с PRODUCT.id в bot.py
-    const products = [
-      {
-        id: 1,
-        name: "Одноразка Elf Bar 600 Mango Ice",
-        price: 350,
-        descriptionShort: "Классический Elf Bar на 600 затяжек с манго и лёгким холодком.",
-        descriptionFull: "Сбалансированный вкус спелого манго с умеренным охлаждением. Подойдёт и новичкам, и тем, кто любит фруктовые миксы без лишней сладости.",
-        category: "Одноразки",
-        sku: "DISP-ELF-600-MGICE",
-        specs: {
-          puffs: "до 600",
-          nicotine: "2% (20 mg/ml)",
-          volume: "2 мл",
-          battery: "550 mAh",
-          taste: "Mango · Ice"
-        }
-      },
-      {
-        id: 2,
-        name: "Одноразка HQD Cuvie Plus Cola Ice",
-        price: 420,
-        descriptionShort: "Увеличенный объём и яркий вкус холодной колы.",
-        descriptionFull: "Газированная кола со льдом — яркий традиционный вкус. Плотный пар, выраженный хит и приятное послевкусие.",
-        category: "Одноразки",
-        sku: "DISP-HQD-CPLUS-COLA",
-        specs: {
-          puffs: "до 1200",
-          nicotine: "5% (50 mg/ml)",
-          volume: "5 мл",
-          battery: "950 mAh",
-          taste: "Cola · Ice"
-        }
-      },
-      {
-        id: 3,
-        name: "Pod-система Voopoo Argus P1 Kit",
-        price: 1990,
-        descriptionShort: "Компактная pod-система с быстрой зарядкой и прозрачным корпусом.",
-        descriptionFull: "Девайс с автоматической тягой, USB-C и стильным прозрачным корпусом. Подходит под солевые и обычные жидкости, отличный вариант «на каждый день».",
-        category: "Pod-системы",
-        sku: "POD-ARGUS-P1",
-        specs: {
-          puffs: "зависит от картриджа",
-          nicotine: "под любые жидкости",
-          volume: "2 мл (картридж)",
-          battery: "800 mAh",
-          taste: "—"
-        }
-      },
-      {
-        id: 4,
-        name: "Жидкость Ice Mint 30 мл · 20 mg",
-        price: 550,
-        descriptionShort: "Чистая мята с мощным охлаждением для любителей холодка.",
-        descriptionFull: "Прямой мятный вкус без фруктов и десертов. Выраженный холодок и освежающий эффект, отлично заходит на pod-системах.",
-        category: "Жидкости",
-        sku: "LIQ-ICEMINT-30-20",
-        specs: {
-          puffs: "зависит от девайса",
-          nicotine: "20 mg (salt)",
-          volume: "30 мл",
-          battery: "—",
-          taste: "Mint · Strong Ice"
-        }
-      },
-      {
-        id: 5,
-        name: "Жидкость Strawberry Lychee 30 мл · 35 mg",
-        price: 590,
-        descriptionShort: "Сладкая клубника с личи и лёгким охлаждением.",
-        descriptionFull: "Фруктовый микс для тех, кто любит сладость без приторности. Хорошо раскрывается на малой мощности.",
-        category: "Жидкости",
-        sku: "LIQ-STRAW-LYCH-30-35",
-        specs: {
-          puffs: "зависит от девайса",
-          nicotine: "35 mg (salt)",
-          volume: "30 мл",
-          battery: "—",
-          taste: "Strawberry · Lychee · Light Ice"
-        }
-      },
-      {
-        id: 6,
-        name: "Испарители Voopoo PnP 0.8 Ω (5 шт.)",
-        price: 790,
-        descriptionShort: "Набор испарителей для pod-систем Voopoo на тугую затяжку.",
-        descriptionFull: "Стабильная подача вкуса и пара, оптимальны для солевых жидкостей. Подходят к большинству устройств серии PnP.",
-        category: "Комплектующие",
-        sku: "COIL-PNP-08-5PK",
-        specs: {
-          puffs: "до 1000 на один испаритель",
-          nicotine: "рекомендовано salt",
-          volume: "—",
-          battery: "—",
-          taste: "—"
-        }
-      }
-    ];
+    // Товары будут загружены из products.json
+    let products = [];
 
-    // ========= ЛОГИКА =========
     const productsContainer = document.getElementById("products");
     const categoryBar = document.getElementById("categoryBar");
     const searchInput = document.getElementById("searchInput");
@@ -650,29 +595,38 @@
       slice.forEach((p) => {
         const card = document.createElement("div");
         card.className = "card";
-        card.dataset.id = p.id; // для открытия деталей по клику
+        card.dataset.id = p.id;
 
         card.innerHTML = `
-          <div class="card-header">
-            <div class="card-title-wrap">
-              <div class="card-title">
-                <span>💨</span>
-                <span>${p.name}</span>
+          <div class="card-main">
+            ${p.image ? `
+              <div class="card-image-wrap">
+                <img src="${p.image}" alt="${p.name}" class="card-image">
               </div>
-              <div class="card-sku">ID: ${p.id}${p.sku ? " · " + p.sku : ""}</div>
-              <div class="card-category">${p.category}</div>
+            ` : ""}
+            <div class="card-content">
+              <div class="card-header">
+                <div class="card-title-wrap">
+                  <div class="card-title">
+                    <span>💨</span>
+                    <span>${p.name}</span>
+                  </div>
+                  <div class="card-sku">ID: ${p.id}${p.sku ? " · " + p.sku : ""}</div>
+                  <div class="card-category">${p.category}</div>
+                </div>
+                <div class="card-price">${p.price} грн</div>
+              </div>
+              <div class="card-desc">${p.descriptionShort || ""}</div>
+              <div class="card-footer">
+                <button class="btn-secondary" data-action="details" data-id="${p.id}">
+                  Подробнее
+                </button>
+                <button class="btn" data-action="buy" data-id="${p.id}">
+                  <span>Купить</span>
+                  <span>➜</span>
+                </button>
+              </div>
             </div>
-            <div class="card-price">${p.price} грн</div>
-          </div>
-          <div class="card-desc">${p.descriptionShort || ""}</div>
-          <div class="card-footer">
-            <button class="btn-secondary" data-action="details" data-id="${p.id}">
-              Подробнее
-            </button>
-            <button class="btn" data-action="buy" data-id="${p.id}">
-              <span>Купить</span>
-              <span>➜</span>
-            </button>
           </div>
         `;
 
@@ -720,6 +674,12 @@
           </div>
           <div class="detail-price">${product.price} грн</div>
         </div>
+
+        ${product.image ? `
+          <div class="detail-image-wrap">
+            <img src="${product.image}" alt="${product.name}" class="detail-image">
+          </div>
+        ` : ""}
 
         <div>
           <div class="detail-section-title">Описание</div>
@@ -770,7 +730,6 @@
         </div>
       `;
 
-      // маленькие кнопки внутри детали
       document.getElementById("detailBackSmall").onclick = () => {
         closeDetail();
       };
@@ -828,8 +787,28 @@
       }
     });
 
-    renderCategories();
-    renderProducts();
+    async function loadProducts() {
+      try {
+        const res = await fetch("products.json");
+        if (!res.ok) {
+          throw new Error("HTTP " + res.status);
+        }
+        products = await res.json();
+        renderCategories();
+        renderProducts();
+      } catch (e) {
+        console.error("Ошибка загрузки products.json", e);
+        const app = document.getElementById("products");
+        if (app) {
+          app.innerHTML = "<p>Не удалось загрузить каталог товаров 😔</p>";
+        }
+        if (counterEl) {
+          counterEl.textContent = "";
+        }
+      }
+    }
+
+    loadProducts();
   </script>
 </body>
 </html>
