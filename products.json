@@ -1,37 +1,35 @@
 [
+ {
+  "id": 2,
+  "name": "Картридж Nexlim",
+  "price": 180,
+  "category": "Картриджи",
+  "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",
+  "optionLabel": "Сопротивление",
+  "options": [
+    { "id": "0.4", "name": "0.4 Ω", "inStock": false },
+    { "id": "0.6", "name": "0.6 Ω", "inStock": true },
+    { "id": "0.8", "name": "0.8 Ω", "inStock": true },
+    { "id": "1.0", "name": "1.0 Ω", "inStock": true }
+  ]
+}
+,
   {
-    "id": 1,
-    "name": "картридж OXVA NeXLIM 0.6 Ом 4 мл",
-    "oldPrice": 200,
-    "price": 180,
-    "descriptionShort": "Змінний картридж OXVA NeXLIM 0.6 Ом 4 мл",
-    "descriptionFull": "Картридж OXVA NeXLIM 0.6 Ом 4 мл",
-    "category": "Комплектующие",
-    "sku": "OXVANEXLIM064ML",
-    "inStock": false,
-    "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",  
-    "specs": {
-      "puffs": "-",
-      "nicotine": "-",
-      "volume": "4 мл",
-      "battery": "-",
-      "taste": "-"
-    }
-  },
-  {
-    "id": 2,
-    "name": "Одноразка HQD Cuvie Plus Cola Ice",
-    "price": 420,
-    "descriptionShort": "Увеличенный объём и яркий вкус холодной колы.",
-    "descriptionFull": "Газированная кола со льдом — яркий традиционный вкус. Плотный пар, выраженный хит и приятное послевкусие.",
-    "category": "Одноразки",
-    "sku": "DISP-HQD-CPLUS-COLA",
-    "specs": {
-      "puffs": "до 1200",
-      "nicotine": "5% (50 mg/ml)",
-      "volume": "5 мл",
-      "battery": "950 mAh",
-      "taste": "Cola · Ice"
+   "id": 1,
+  "name": "Elf Bar 1500",
+  "price": 380,
+  "category": "Одноразки",
+  "image": "img/elf-bar-1500-golubika-blueberry.jpg",
+  "optionLabel": "Вкус",
+  "options": [
+    { "id": "mango_ice", "name": "Mango Ice", "inStock": true },
+    { "id": "cola_ice", "name": "Cola Ice", "inStock": true },
+    { "id": "grape", "name": "Grape", "inStock": false }
+  ],
+  "specs": {
+    "puffs": "до 1500",
+    "nicotine": "2%",
+    "volume": "4.8 мл"
     }
   },
   {
