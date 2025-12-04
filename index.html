@@ -528,12 +528,147 @@
       white-space: nowrap;
     }
 
+    /* Похожие товары */
+
+    .similar-section {
+      margin-top: 10px;
+    }
+
+    .similar-list {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .similar-card {
+      flex: 1 1 130px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      cursor: pointer;
+      transition: border-color 0.12s ease, transform 0.08s ease;
+    }
+
+    .similar-card:hover {
+      border-color: rgba(56, 189, 248, 0.9);
+      transform: translateY(-1px);
+    }
+
+    .similar-image-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.2), rgba(15, 23, 42, 1));
+    }
+
+    .similar-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .similar-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .similar-name {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .similar-price {
+      font-size: 12px;
+      color: #4ade80;
+    }
+
+    /* Age gate 18+ */
+
+    .age-gate {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 16px;
+    }
+
+    .age-card {
+      max-width: 360px;
+      width: 100%;
+      border-radius: 20px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.15), rgba(15, 23, 42, 1));
+      border: 1px solid rgba(55, 65, 81, 0.95);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+    }
+
+    .age-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .age-sub {
+      font-size: 13px;
+      color: #9ca3af;
+    }
+
+    .age-actions {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .age-note {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
     .hidden {
       display: none !important;
     }
   </style>
 </head>
 <body>
+  <!-- AGE GATE -->
+  <div id="ageGate" class="age-gate hidden">
+    <div class="age-card">
+      <div class="age-title">Тебе уже есть 18 лет?</div>
+      <div class="age-sub">
+        Доступ к вейп-продукции возможен только для совершеннолетних пользователей.
+      </div>
+      <div class="age-actions">
+        <button id="btnOver18" class="btn">
+          Да, мне уже есть 18
+        </button>
+        <button id="btnUnder18" class="btn-secondary">
+          Нет, мне меньше 18
+        </button>
+      </div>
+      <div class="age-note">
+        Нажимая «Да», ты подтверждаешь, что достиг(ла) совершеннолетия согласно законодательству своей страны.
+      </div>
+    </div>
+  </div>
+
   <div class="app">
     <div class="header">
       <div class="header-badge">
@@ -612,6 +747,10 @@
     const detailView = document.getElementById("detailView");
     const detailCard = document.getElementById("detailCard");
     const backBtn = document.getElementById("backBtn");
+
+    const ageGateEl = document.getElementById("ageGate");
+    const btnOver18 = document.getElementById("btnOver18");
+    const btnUnder18 = document.getElementById("btnUnder18");
 
     let activeCategory = "Все";
     let sortMode = "default";
@@ -845,6 +984,32 @@
         ? Math.round((product.oldPrice - product.price) / product.oldPrice * 100)
         : 0;
 
+      const similar = products
+        .filter((p2) => p2.id !== product.id && p2.category === product.category)
+        .slice(0, 3);
+
+      const similarHtml = similar.length
+        ? `
+        <div class="similar-section">
+          <div class="detail-section-title">Похожие товары</div>
+          <div class="similar-list">
+            ${similar.map(sp => `
+              <div class="similar-card" data-id="${sp.id}">
+                ${sp.image ? `
+                  <div class="similar-image-wrap">
+                    <img src="${sp.image}" alt="${sp.name}" class="similar-image">
+                  </div>
+                ` : ""}
+                <div class="similar-info">
+                  <div class="similar-name">${sp.name}</div>
+                  <div class="similar-price">${sp.price} грн</div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      ` : "";
+
       detailCard.innerHTML = `
         <div class="detail-header">
           <div class="detail-title-wrap">
@@ -908,6 +1073,8 @@
               </div>` : ""}
           </div>
         </div>
+
+        ${similarHtml}
 
         <div class="detail-footer">
           <div class="detail-footer-left">
@@ -1032,6 +1199,49 @@
       }
     });
 
+    // клики по "похожим товарам" в деталке
+    detailCard.addEventListener("click", (event) => {
+      const simCard = event.target.closest(".similar-card");
+      if (!simCard) return;
+      const id = Number(simCard.dataset.id);
+      const product = products.find((p) => p.id === id);
+      if (product) openDetail(product);
+    });
+
+    // AGE GATE
+
+    function checkAgeGate() {
+      try {
+        const val = localStorage.getItem("vm_ageConfirmed");
+        if (val === "yes") {
+          ageGateEl.classList.add("hidden");
+          return true;
+        }
+        ageGateEl.classList.remove("hidden");
+        return false;
+      } catch (e) {
+        // если localStorage недоступен — показываем гейт каждый раз
+        ageGateEl.classList.remove("hidden");
+        return false;
+      }
+    }
+
+    btnOver18.addEventListener("click", () => {
+      try {
+        localStorage.setItem("vm_ageConfirmed", "yes");
+      } catch (e) {}
+      ageGateEl.classList.add("hidden");
+    });
+
+    btnUnder18.addEventListener("click", () => {
+      // закрываем WebApp или показываем заглушку
+      if (tg && tg.close) {
+        tg.close();
+      } else {
+        document.body.innerHTML = "<div style='padding:20px;color:#f9fafb;background:#020617;font-family:system-ui'>Доступ к магазину только для лиц 18+.</div>";
+      }
+    });
+
     async function loadProducts() {
       try {
         const res = await fetch("products.json");
@@ -1053,6 +1263,8 @@
       }
     }
 
+    // сначала проверим age gate, параллельно можем грузить товары
+    checkAgeGate();
     loadProducts();
   </script>
 </body>
