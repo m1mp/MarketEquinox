@@ -9,7 +9,7 @@ import requests
 # ========= НАСТРОЙКИ =========
 # ВСТАВЬ СЮДА СВОЙ ТОКЕН И АДМИН-АЙДИ
 TELEGRAM_BOT_TOKEN = "8570781131:AAEsSFJf44OpGXV8ML0WlOlF_l0HOgfkAE0"
-ADMIN_CHAT_ID = "979000473"  # твой Telegram ID (куда будут прилетать заказы)
+ADMIN_CHAT_ID = 979000473  # твой Telegram ID (куда будут прилетать заказы)
 
 # URL твоего WebApp на GitHub Pages
 WEBAPP_URL = "https://market-equinox.vercel.app/"
@@ -123,6 +123,52 @@ def build_user_title(user: dict) -> str:
     return title
 
 
+def format_contact_block(contact: Optional[Dict[str, Any]]) -> str:
+    """
+    Форматируем блок с контактными данными, которые пришли из WebApp.
+    contact:
+      {
+        "name": "...",
+        "phone": "...",
+        "preferred": "telegram" | "phone" | "whatsapp",
+        "city": "...",
+        "delivery": "...",
+        "address": "...",
+        "comment": "..."
+      }
+    """
+    if not isinstance(contact, dict):
+        return "Данные формы не переданы."
+
+    name = contact.get("name") or "—"
+    phone = contact.get("phone") or "—"
+    preferred = contact.get("preferred") or "—"
+    city = contact.get("city") or "—"
+    delivery = contact.get("delivery") or "—"
+    address = contact.get("address") or "—"
+    comment = contact.get("comment") or "—"
+
+    if preferred == "telegram":
+        preferred_human = "Написать в Telegram"
+    elif preferred == "phone":
+        preferred_human = "Позвонить"
+    elif preferred == "whatsapp":
+        preferred_human = "Написать в WhatsApp"
+    else:
+        preferred_human = preferred
+
+    lines = [
+        f"Имя: {name}",
+        f"Телефон: {phone}",
+        f"Способ связи: {preferred_human}",
+        f"Город: {city}",
+        f"Доставка: {delivery}",
+        f"Адрес / отделение: {address}",
+        f"Комментарий: {comment}",
+    ]
+    return "\n".join(lines)
+
+
 # ========= ОБРАБОТКА КОМАНД И СООБЩЕНИЙ =========
 
 def handle_start(message: dict):
@@ -137,12 +183,12 @@ def handle_start(message: dict):
     }
 
     reply_markup = {
-        "keyboard": [
-            [webapp_button],
-            [support_button],
-        ],
-        "resize_keyboard": True,
-        "one_time_keyboard": False,
+      "keyboard": [
+          [webapp_button],
+          [support_button],
+      ],
+      "resize_keyboard": True,
+      "one_time_keyboard": False,
     }
 
     send_message(
@@ -203,6 +249,7 @@ def process_buy(payload: Dict[str, Any], message: dict, from_user: dict):
 
     product_id = payload.get("productId")
     option_id = payload.get("optionId")
+    contact = payload.get("contact")  # может быть None
 
     if product_id is None:
         send_message(chat_id, "Ошибка: не передан ID товара.")
@@ -224,17 +271,19 @@ def process_buy(payload: Dict[str, Any], message: dict, from_user: dict):
     user_title = build_user_title(from_user)
     user_id_line = f"ID пользователя: {from_user.get('id')}" if from_user.get("id") else "ID пользователя неизвестен"
 
+    contact_block = format_contact_block(contact)
+
     admin_text = (
         "🆕 <b>Новый заказ (один товар)</b>\n\n"
         f"👤 {user_title}\n"
         f"{user_id_line}\n\n"
-        f"{format_product_option_line(product, option, qty=1)}\n"
+        f"{format_product_option_line(product, option, qty=1)}\n\n"
+        f"<b>Контактные данные:</b>\n"
+        f"{contact_block}"
     )
 
-    # админу
     send_message(ADMIN_CHAT_ID, admin_text, parse_mode="HTML")
 
-    # пользователю
     send_message(
         chat_id,
         "Заявка отправлена! 🙌\n"
@@ -245,6 +294,7 @@ def process_buy(payload: Dict[str, Any], message: dict, from_user: dict):
 def process_cart_checkout(payload: Dict[str, Any], message: dict, from_user: dict):
     chat_id = message["chat"]["id"]
     items = payload.get("items")
+    contact = payload.get("contact")  # может быть None
 
     if not isinstance(items, list) or not items:
         send_message(chat_id, "Корзина пуста или данные повреждены.")
@@ -293,12 +343,16 @@ def process_cart_checkout(payload: Dict[str, Any], message: dict, from_user: dic
     user_title = build_user_title(from_user)
     user_id_line = f"ID пользователя: {from_user.get('id')}" if from_user.get("id") else "ID пользователя неизвестен"
 
+    contact_block = format_contact_block(contact)
+
     admin_text = (
         "🆕 <b>Новый заказ (корзина)</b>\n\n"
         f"👤 {user_title}\n"
         f"{user_id_line}\n\n"
         + "\n".join(lines)
-        + f"\n\n<b>Итого: {total_sum} грн</b>"
+        + f"\n\n<b>Итого: {total_sum} грн</b>\n\n"
+        f"<b>Контактные данные:</b>\n"
+        f"{contact_block}"
     )
 
     send_message(ADMIN_CHAT_ID, admin_text, parse_mode="HTML")
@@ -369,7 +423,6 @@ def main():
             except Exception as e:
                 logger.exception("Error processing update: %s", e)
 
-        # небольшая пауза, чтобы не молотить API слишком часто
         time.sleep(1)
 
 
