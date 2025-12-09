@@ -123,6 +123,50 @@
       "nicotine": "5%",
       "volume": "30 мл"
     }
+  },
+  {
+    "id": 5,
+    "name": "Набір для самозамісу Chaser Black 30 мл",
+    "price": 380,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "TripleSourApple", "name": "Потрійне Кисле Яблуко", "inStock": true },
+      { "id": "BlueberryRaspCurrant", "name": "Чорниця Малина Смородина", "inStock": true },
+      { "id": "StrawberryBlueberry", "name": "Полуниця Чорниця", "inStock": true },
+      { "id": "OrangeGuavaStrawberry", "name": "Апельсин Гуава Полуниця", "inStock": true },
+      { "id": "CurrantPeachApple", "name": "Смородина Персик Яблуко", "inStock": true },
+      { "id": "EnergyRaspberry", "name": "Енергетик Малина", "inStock": true },
+      { "id": "OrangePassion", "name": "Апельсин Маракуйя", "inStock": true },
+      { "id": "OrangePassionIce", "name": "Апельсин Маракуйя Лід", "inStock": true },
+      { "id": "BlueberrySourRasp", "name": "Чорниця Кисла Малина", "inStock": true },
+      { "id": "Bubblegum", "name": "Жуйка", "inStock": true },
+      { "id": "EnergyGrape", "name": "Енергетик Виноград", "inStock": true },
+      { "id": "KiwiStrawberry", "name": "Ківі Суниця", "inStock": true },
+      { "id": "LemonMint", "name": "Лимон М'ята", "inStock": true },
+      { "id": "RaspCherryCurrant", "name": "Малина Вишня Смородина", "inStock": true },
+      { "id": "TripleRaspberry", "name": "Потрійна Малина", "inStock": true },
+      { "id": "WatermelonLemon", "name": "Кавун Лимон", "inStock": true },
+      { "id": "PinkLemonade", "name": "Рожевий Лимонад", "inStock": true },
+      { "id": "BlackCurrantRose", "name": "Смородина Троянда", "inStock": true },
+      { "id": "JasmineTea", "name": "Жасминовий Чай", "inStock": true },
+      { "id": "BlueberryGum", "name": "Жуйка Чорниця", "inStock": true },
+      { "id": "PlumLime", "name": "Слива Лайм", "inStock": true },
+      { "id": "MangoPineappleOrange", "name": "Манго Ананас Апельсин", "inStock": true },
+      { "id": "BlueberryLemon", "name": "Чорниця Лимон", "inStock": true },
+      { "id": "BananaApple", "name": "Банан Яблуко", "inStock": true },
+      { "id": "PeachLemonade", "name": "Персиковий Лимонад", "inStock": true },
+      { "id": "Compote", "name": "Компот", "inStock": true },
+      { "id": "Mojito", "name": "Мохіто", "inStock": true },
+      { "id": "BlueRazzApple", "name": "Блакитна Малина Яблуко", "inStock": true },
+      { "id": "WatermelonCherry", "name": "Кавун Вишня", "inStock": true },
+      { "id": "StrawberryMenthol", "name": "Суниця Ментол", "inStock": true }
+    ],
+    "specs": {
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
+    }
   }
 ]
-
