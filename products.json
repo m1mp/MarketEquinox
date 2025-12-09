@@ -1,99 +1,82 @@
 [
- {
-  "id": 2,
-  "name": "Картридж Nexlim",
-  "price": 180,
-  "category": "Картриджи",
-  "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",
-  "optionLabel": "Сопротивление",
-  "options": [
-    { "id": "0.4", "name": "0.4 Ω", "inStock": false },
-    { "id": "0.6", "name": "0.6 Ω", "inStock": true },
-    { "id": "0.8", "name": "0.8 Ω", "inStock": true },
-    { "id": "1.0", "name": "1.0 Ω", "inStock": true }
-  ]
-}
-,
   {
-   "id": 1,
-  "name": "Elf Bar 1500",
-  "price": 380,
-  "category": "Одноразки",
-  "image": "img/elf-bar-1500-golubika-blueberry.jpg",
-  "optionLabel": "Вкус",
-  "options": [
-    { "id": "mango_ice", "name": "Mango Ice", "inStock": true },
-    { "id": "cola_ice", "name": "Cola Ice", "inStock": true },
-    { "id": "grape", "name": "Grape", "inStock": false }
-  ],
-  "specs": {
-    "puffs": "до 1500",
-    "nicotine": "2%",
-    "volume": "4.8 мл"
+    "id": 2,
+    "name": "Картридж Nexlim",
+    "price": 180,
+    "category": "Картриджи",
+    "image": "img/oxva-nexlim-cartridge-06ohm-4ml.jpg",
+    "optionLabel": "Сопротивление",
+    "options": [
+      { "id": "0.4", "name": "0.4 Ω", "inStock": false },
+      { "id": "0.6", "name": "0.6 Ω", "inStock": true },
+      { "id": "0.8", "name": "0.8 Ω", "inStock": true },
+      { "id": "1.0", "name": "1.0 Ω", "inStock": true }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Elf Bar 1500",
+    "price": 380,
+    "category": "Одноразки",
+    "image": "img/elf-bar-1500-golubika-blueberry.jpg",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "mango_ice", "name": "Mango Ice", "inStock": true },
+      { "id": "cola_ice", "name": "Cola Ice", "inStock": true },
+      { "id": "grape", "name": "Grape", "inStock": false }
+    ],
+    "specs": {
+      "puffs": "до 1500",
+      "nicotine": "2%",
+      "volume": "4.8 мл"
     }
   },
   {
     "id": 3,
-    "name": "Pod-система Voopoo Argus P1 Kit",
-    "price": 1990,
-    "descriptionShort": "Компактная pod-система с быстрой зарядкой и прозрачным корпусом.",
-    "descriptionFull": "Девайс с автоматической тягой, USB-C и стильным прозрачным корпусом. Подходит под солевые и обычные жидкости, отличный вариант «на каждый день».",
-    "category": "Pod-системы",
-    "sku": "POD-ARGUS-P1",
+    "name": "Набір для самозамісу Chaser ForPods 30 мл 50 мг",
+    "price": 380,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "BlackberryMent", "name": "Чорниця Ментол", "inStock": true },
+      { "id": "Mint", "name": "М'ята", "inStock": true },
+      { "id": "Cherry", "name": "Вишня", "inStock": true },
+      { "id": "Peacg", "name": "Персик", "inStock": true },
+      { "id": "strawberry", "name": "Полуниця", "inStock": true },
+      { "id": "Banana", "name": "Банан", "inStock": true },
+      { "id": "Blueraz", "name": "Блакитна Малина", "inStock": true },
+      { "id": "Watermelon", "name": "Кавун", "inStock": true },
+      { "id": "Blackcurant", "name": "Смородина Ментол", "inStock": true },
+      { "id": "Grape", "name": "Виноград", "inStock": true },
+      { "id": "CherryMint", "name": "Вишня Ментол", "inStock": true },
+      { "id": "Berry", "name": "Ягоди", "inStock": true },
+      { "id": "Lemon", "name": "Лимон", "inStock": true },
+      { "id": "Kiwi", "name": "Ківі", "inStock": true },
+      { "id": "Melon", "name": "Диня", "inStock": true },
+      { "id": "Pomegranate", "name": "Гранат", "inStock": true },
+      { "id": "WatermelonMenthol", "name": "Кавун Ментол", "inStock": true },
+      { "id": "YellowRaspberry", "name": "Жовта Малина", "inStock": true },
+      { "id": "YellowSweetCherry", "name": "Жовта Черешня", "inStock": true },
+      { "id": "YellowDragonfruit", "name": "Жовтий Драгонфрут", "inStock": true },
+      { "id": "Grapefruit", "name": "Грейпфрут", "inStock": true },
+      { "id": "Cactus", "name": "Кактус", "inStock": true },
+      { "id": "Lychee", "name": "Лічі", "inStock": true },
+      { "id": "SweetCherry", "name": "Черешня", "inStock": true },
+      { "id": "OrangeMango", "name": "Апельсин Манго", "inStock": true },
+      { "id": "Mango", "name": "Манго", "inStock": true },
+      { "id": "Apple", "name": "Яблуко", "inStock": true },
+      { "id": "Pineapple", "name": "Ананас", "inStock": true },
+      { "id": "Tangerine", "name": "Мандарин", "inStock": true },
+      { "id": "Tobacco", "name": "Тютюн", "inStock": true },
+      { "id": "Pear", "name": "Груша", "inStock": true },
+      { "id": "Lime", "name": "Лайм", "inStock": true },
+      { "id": "Raspberry", "name": "Малина", "inStock": true }
+    ],
     "specs": {
-      "puffs": "зависит от картриджа",
-      "nicotine": "под любые жидкости",
-      "volume": "2 мл (картридж)",
-      "battery": "800 mAh",
-      "taste": "—"
-    }
-  },
-  {
-    "id": 4,
-    "name": "Жидкость Ice Mint 30 мл · 20 mg",
-    "price": 550,
-    "descriptionShort": "Чистая мята с мощным охлаждением для любителей холодка.",
-    "descriptionFull": "Прямой мятный вкус без фруктов и десертов. Выраженный холодок и освежающий эффект, отлично заходит на pod-системах.",
-    "category": "Жидкости",
-    "sku": "LIQ-ICEMINT-30-20",
-    "specs": {
-      "puffs": "зависит от девайса",
-      "nicotine": "20 mg (salt)",
-      "volume": "30 мл",
-      "battery": "—",
-      "taste": "Mint · Strong Ice"
-    }
-  },
-  {
-    "id": 5,
-    "name": "Жидкость Strawberry Lychee 30 мл · 35 mg",
-    "price": 590,
-    "descriptionShort": "Сладкая клубника с личи и лёгким охлаждением.",
-    "descriptionFull": "Фруктовый микс для тех, кто любит сладость без приторности. Хорошо раскрывается на малой мощности.",
-    "category": "Жидкости",
-    "sku": "LIQ-STRAW-LYCH-30-35",
-    "specs": {
-      "puffs": "зависит от девайса",
-      "nicotine": "35 mg (salt)",
-      "volume": "30 мл",
-      "battery": "—",
-      "taste": "Strawberry · Lychee · Light Ice"
-    }
-  },
-  {
-    "id": 6,
-    "name": "Испарители Voopoo PnP 0.8 Ω (5 шт.)",
-    "price": 790,
-    "descriptionShort": "Набор испарителей для pod-систем Voopoo на тугую затяжку.",
-    "descriptionFull": "Стабильная подача вкуса и пара, оптимальны для солевых жидкостей. Подходят к большинству устройств серии PnP.",
-    "category": "Комплектующие",
-    "sku": "COIL-PNP-08-5PK",
-    "specs": {
-      "puffs": "до 1000 на один испаритель",
-      "nicotine": "рекомендовано salt",
-      "volume": "—",
-      "battery": "—",
-      "taste": "—"
+      "puffs": "до 1500",
+      "nicotine": "2%",
+      "volume": "4.8 мл"
     }
   }
 ]
