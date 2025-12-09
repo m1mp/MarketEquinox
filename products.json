@@ -1,4 +1,3 @@
-
 [
   {
     "id": 2,
@@ -162,6 +161,101 @@
       { "id": "BlueRazzApple", "name": "Блакитна Малина Яблуко", "inStock": true },
       { "id": "WatermelonCherry", "name": "Кавун Вишня", "inStock": true },
       { "id": "StrawberryMenthol", "name": "Суниця Ментол", "inStock": true }
+    ],
+    "specs": {
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
+    }
+  },
+  {
+    "id": 6,
+    "name": "Набір для самозамісу OctoBar NFT Salt 30 мл",
+    "price": 350,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "AppleGrape", "name": "Яблуко Виноград", "inStock": true },
+      { "id": "BananaPineappleAloe", "name": "Банан Ананас Алое", "inStock": true },
+      { "id": "BlueRazzLemonade", "name": "Лимонад Блакитна Малина", "inStock": true },
+      { "id": "Energy", "name": "Енергетик", "inStock": true },
+      { "id": "GrapeBlueberryIce", "name": "Виноград Чорниця Лід", "inStock": true },
+      { "id": "StrawWatermelonIce", "name": "Полуниця Кавун Лід", "inStock": true },
+      { "id": "Berries", "name": "Ягоди", "inStock": true },
+      { "id": "PapayaGuava", "name": "Папайя Гуава", "inStock": true },
+      { "id": "PearApple", "name": "Груша Яблуко", "inStock": true },
+      { "id": "StrawberryIce", "name": "Полуниця Лід", "inStock": true },
+      { "id": "PineappleMangoPeach", "name": "Ананас Манго Персик", "inStock": true },
+      { "id": "BerryTea", "name": "Ягідний Чай", "inStock": true },
+      { "id": "Citrus", "name": "Цитрус", "inStock": true },
+      { "id": "MintIce", "name": "М'ята Лід", "inStock": true },
+      { "id": "SourApple", "name": "Кисле Яблуко", "inStock": true }
+    ],
+    "specs": {
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
+    }
+  },
+  {
+    "id": 7,
+    "name": "Набір для самозамісу Octobar X 30 мл",
+    "price": 350,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "Berries", "name": "Ягоди", "inStock": true },
+      { "id": "Blueberry", "name": "Чорниця", "inStock": true },
+      { "id": "Cactus", "name": "Соковитий Кактус", "inStock": true },
+      { "id": "CherryJuice", "name": "Вишневий Сік", "inStock": true },
+      { "id": "Coffee", "name": "Кава", "inStock": true },
+      { "id": "GrapefruitIce", "name": "Грейпфрут Лід", "inStock": true },
+      { "id": "LemonMenthol", "name": "Лимон Ментол", "inStock": true },
+      { "id": "Grape", "name": "Виноград", "inStock": true },
+      { "id": "Tobacco", "name": "Тютюн", "inStock": true },
+      { "id": "StrawberryCurrant", "name": "Суниця Чорна Смородина", "inStock": true }
+    ],
+    "specs": {
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
+    }
+  },
+  {
+    "id": 8,
+    "name": "Набір для самозамісу Punch 30 мл",
+    "price": 350,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "Mint", "name": "М'ята", "inStock": true },
+      { "id": "RaspberryBlueberry", "name": "Малина Чорниця", "inStock": true },
+      { "id": "MintLemonade", "name": "М'ятний Лимонад", "inStock": true },
+      { "id": "CherryRoseLemon", "name": "Вишня Троянда Лимон", "inStock": true },
+      { "id": "RaspberryBlackberry", "name": "Малина Ожина", "inStock": true },
+      { "id": "AppleKiwiMint", "name": "Яблуко Ківі М'ята", "inStock": true },
+      { "id": "EnergyIce", "name": "Енергетик Лід", "inStock": true },
+      { "id": "Citrus", "name": "Цитрусовий Мікс", "inStock": true },
+      { "id": "CherryOrangeGrapefruit", "name": "Вишня Апельсин Грейпфрут", "inStock": true },
+      { "id": "BananaMelon", "name": "Банан Диня", "inStock": true },
+      { "id": "SweetCherryOrangeIce", "name": "Черешня Апельсин Лід", "inStock": true },
+      { "id": "PinkGrapefruitRaspStraw", "name": "Грейпфрут Малина Полуниця", "inStock": true },
+      { "id": "BlueberryLemonSorbet", "name": "Щербет Чорниця Лимон", "inStock": true },
+      { "id": "TropicalLemonade", "name": "Тропічний Лимонад", "inStock": true },
+      { "id": "WatermelonLemon", "name": "Кавун Лимон", "inStock": true },
+      { "id": "PearLemonade", "name": "Грушевий Лимонад", "inStock": true },
+      { "id": "StrawberryKiwiLime", "name": "Полуниця Ківі Лайм", "inStock": true },
+      { "id": "PassionPearStrawberry", "name": "Маракуйя Груша Полуниця", "inStock": true },
+      { "id": "PeachLemonKiwi", "name": "Персик Лимон Ківі", "inStock": true },
+      { "id": "TobaccoVanilla", "name": "Тютюн Ваніль", "inStock": true },
+      { "id": "WatermelonRaspCurrant", "name": "Кавун Малина Смородина", "inStock": true },
+      { "id": "GreenTeaMint", "name": "Зелений Чай М'ята", "inStock": true },
+      { "id": "AppleLemonOrange", "name": "Яблуко Лимон Апельсин", "inStock": true },
+      { "id": "LemongrassStrawberryIce", "name": "Лемонграс Суниця Лід", "inStock": true },
+      { "id": "GrapeKiwiLime", "name": "Виноград Ківі Лайм", "inStock": true }
     ],
     "specs": {
       "puffs": "-",
