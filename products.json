@@ -1,3 +1,15 @@
+Ось повний, готовий до використання код.
+
+Я додав новий товар **"Chaser Lux 30 мл"** під `id: 4`.
+Також я зробив наступне:
+
+1.  **Створив англійські `id`** для кожного нового смаку.
+2.  **Виправив назви:** перевів їх з родового відмінка ("вишні") у називний ("Вишня"), щоб у меню вибору це виглядало гарно.
+3.  **Поправив об'єм:** У попередньому товарі (Chaser ForPods) в характеристиках було помилково вказано `4.8 мл` (скопійовано з ElfBar), хоча в назві `30 мл`. У новому товарі я поставив правильний об'єм `30 мл`.
+
+<!-- end list -->
+
+```json
 [
   {
     "id": 2,
@@ -74,9 +86,54 @@
       { "id": "Raspberry", "name": "Малина", "inStock": true }
     ],
     "specs": {
-      "puffs": "до 1500",
-      "nicotine": "2%",
-      "volume": "4.8 мл"
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Набір для самозамісу Chaser Lux 30 мл",
+    "price": 380,
+    "category": "Самозаміс",
+    "image": "",
+    "optionLabel": "Вкус",
+    "options": [
+      { "id": "CherryLemon", "name": "Вишня Лимон", "inStock": true },
+      { "id": "CoconutMelon", "name": "Кокос Диня", "inStock": true },
+      { "id": "Energy", "name": "Енергетик", "inStock": true },
+      { "id": "PassionGuava", "name": "Маракуйя Гуава", "inStock": true },
+      { "id": "OrangeMango", "name": "Апельсин Манго", "inStock": true },
+      { "id": "BerryLemonade", "name": "Ягідний Лимонад", "inStock": true },
+      { "id": "BlueberryMint", "name": "Чорниця М'ята", "inStock": true },
+      { "id": "GrapeMint", "name": "Виноград М'ята", "inStock": true },
+      { "id": "PeachTea", "name": "Персиковий Чай", "inStock": true },
+      { "id": "SourApple", "name": "Кисле Яблуко", "inStock": true },
+      { "id": "StrawberryCream", "name": "Полуничний Крем", "inStock": true },
+      { "id": "Mint", "name": "М'ята", "inStock": true },
+      { "id": "PeachApple", "name": "Персик Яблуко", "inStock": true },
+      { "id": "WatermelonRaspberry", "name": "Кавун Малина", "inStock": true },
+      { "id": "Sangria", "name": "Сангрія Яблуко Апельсин", "inStock": true },
+      { "id": "BlueberryRaspberry", "name": "Чорниця Малина", "inStock": true },
+      { "id": "BlackberryLemonade", "name": "Ожиновий Лимонад", "inStock": true },
+      { "id": "MangoNectar", "name": "Манговий Нектар", "inStock": true },
+      { "id": "WatermelonCandy", "name": "Кавунова Цукерка", "inStock": true },
+      { "id": "PineBerries", "name": "Хвоя Лісові Ягоди", "inStock": true },
+      { "id": "IcedLatte", "name": "Холодний Латте", "inStock": true },
+      { "id": "StrawberryDragon", "name": "Полуниця Драгонфрут", "inStock": true },
+      { "id": "BerryCider", "name": "Ягідний Сидр", "inStock": true },
+      { "id": "BlueRazzHibiscus", "name": "Блакитна Малина Гібіскус", "inStock": true },
+      { "id": "NectarJuice", "name": "Сік зі Свіжого Нектару", "inStock": true },
+      { "id": "RaspAppleLemonade", "name": "Лимонад Малина Яблуко", "inStock": true },
+      { "id": "BlueberryGuava", "name": "Чорниця Гуава", "inStock": true },
+      { "id": "PeachYogurt", "name": "Персиковий Йогурт", "inStock": true },
+      { "id": "WatermelonLime", "name": "Кавун Лайм", "inStock": true }
+    ],
+    "specs": {
+      "puffs": "-",
+      "nicotine": "5%",
+      "volume": "30 мл"
     }
   }
 ]
+```
