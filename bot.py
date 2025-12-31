@@ -346,6 +346,12 @@ def main():
                 if "message" in upd:
                     msg = upd["message"]
                     chat_id = msg["chat"]["id"]
+                    user_id = msg.get("from", {}).get("id", chat_id)  # ID пользователя
+                    
+                    # Отладка: логируем ID для проверки
+                    if msg.get("text") == "/start":
+                        logger.info(f"User ID: {user_id}, Chat ID: {chat_id}, Admin ID: {ADMIN_CHAT_ID}")
+                        logger.info(f"Is admin: {user_id == ADMIN_CHAT_ID or chat_id == ADMIN_CHAT_ID}")
                     
                     if "web_app_data" in msg:
                         process_webapp_data(msg)
@@ -353,7 +359,9 @@ def main():
                     elif "text" in msg:
                         txt = msg["text"]
                         if txt == "/start":
-                            if chat_id == ADMIN_CHAT_ID:
+                            # Проверяем оба варианта ID
+                            is_admin = (user_id == ADMIN_CHAT_ID) or (chat_id == ADMIN_CHAT_ID)
+                            if is_admin:
                                 # Админ-панель
                                 kb = {
                                     "keyboard": [
@@ -371,7 +379,26 @@ def main():
                                 }
                                 send_message(chat_id, "Привет! Жми кнопку ниже 👇", reply_markup=kb)
                         
-                        elif chat_id == ADMIN_CHAT_ID:
+                        elif txt == "/myid":
+                            # Команда для получения своего ID (для всех)
+                            send_message(chat_id, 
+                                f"📱 Ваш ID:\n"
+                                f"User ID: {user_id}\n"
+                                f"Chat ID: {chat_id}\n\n"
+                                f"Текущий Admin ID в коде: {ADMIN_CHAT_ID}\n\n"
+                                f"Если вы админ, но панель не открывается, обновите ADMIN_CHAT_ID в bot.py на один из этих ID"
+                            )
+                        
+                        elif (user_id == ADMIN_CHAT_ID) or (chat_id == ADMIN_CHAT_ID):
+                            # Команда для получения своего ID
+                            send_message(chat_id, 
+                                f"📱 Ваш ID:\n"
+                                f"User ID: {user_id}\n"
+                                f"Chat ID: {chat_id}\n\n"
+                                f"Текущий Admin ID: {ADMIN_CHAT_ID}"
+                            )
+                        
+                        elif (user_id == ADMIN_CHAT_ID) or (chat_id == ADMIN_CHAT_ID):
                             # Админ-команды
                             if txt == "📋 Заказы" or txt.startswith("/orders"):
                                 orders = get_orders(limit=10)
@@ -477,9 +504,10 @@ def main():
                     query = upd["callback_query"]
                     query_id = query["id"]
                     data = query["data"]
-                    chat_id = query["from"]["id"]
+                    chat_id = query.get("message", {}).get("chat", {}).get("id", 0)
+                    user_id_from_query = query["from"]["id"]
                     
-                    if chat_id != ADMIN_CHAT_ID:
+                    if (user_id_from_query != ADMIN_CHAT_ID) and (chat_id != ADMIN_CHAT_ID):
                         requests.post(API_URL + "answerCallbackQuery", json={"callback_query_id": query_id, "text": "Только для админа"})
                         continue
                     
