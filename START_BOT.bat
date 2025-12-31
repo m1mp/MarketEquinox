@@ -3,7 +3,6 @@ echo ====================================
 echo Запуск Telegram бота MarketEquinox
 echo ====================================
 echo.
-
 REM Проверяем наличие Python
 py --version >nul 2>&1
 if errorlevel 1 (
@@ -17,27 +16,18 @@ if errorlevel 1 (
 ) else (
     set PYTHON_CMD=py
 )
-
 echo [OK] Python найден
-echo.
-
-REM Проверяем наличие файла
-if not exist "bot.py" (
-    echo [ОШИБКА] Файл bot.py не найден!
-    pause
-    exit /b 1
-)
-
-echo [OK] Файл bot.py найден
+echo Setting environment variables...
+set TELEGRAM_BOT_TOKEN=8570781131:AAEsSFJf44OpGXV8ML0WlOlF_l0HOgfkAE0
+set ADMIN_CHAT_ID=979000473
+set WEBAPP_URL=https://market-equinox.vercel.app/
+echo [OK] Env variables set
 echo.
 echo ====================================
-echo Запускаю бота...
+echo ������ Telegram ����...
 echo ====================================
 echo.
-echo Для остановки нажмите Ctrl+C
-echo.
-
+echo ������� Ctrl+C ��� ���������
 %PYTHON_CMD% bot.py
 
 pause
-

@@ -11,7 +11,7 @@ from typing import Dict, Any, List
 import requests
 
 # === Config ===
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8570781131:AAEsSFJf44OpGXV8ML0WlOlF_l0HOgfkAE0")
 ADMIN_CHAT_ID = int(os.getenv("ADMIN_CHAT_ID", "979000473"))
 WEBAPP_URL = os.getenv("WEBAPP_URL", "https://market-equinox.vercel.app/")
 
