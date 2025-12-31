@@ -42,6 +42,18 @@
     .container { max-width: 600px; margin: 0 auto; padding: 16px; position: relative; z-index: 1; }
     .hidden { display: none !important; }
 
+    /* AMBIENT ORBS */
+    .ambient { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .orb {
+      position: absolute; width: 260px; height: 260px; border-radius: 50%;
+      filter: blur(60px); opacity: 0.35; mix-blend-mode: screen;
+      animation: float 12s ease-in-out infinite;
+    }
+    .orb.a { background: #22d3ee; top: 12%; left: -6%; animation-delay: 0s; }
+    .orb.b { background: #f97316; top: 5%; right: -8%; animation-delay: 1.5s; }
+    .orb.c { background: #6366f1; bottom: -12%; left: 30%; animation-delay: 3s; }
+    @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-12px) scale(1.05); } }
+
     /* HERO */
     .hero {
       position: relative; overflow: hidden; padding: 18px; margin-bottom: 14px;
@@ -63,6 +75,14 @@
     .hero-btn { background: var(--primary); color: #02121c; box-shadow: 0 10px 30px rgba(34,211,238,0.35); }
     .hero-btn:active { transform: translateY(1px); }
     .hero-ghost { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.12); }
+
+    /* SKELETONS */
+    .skeleton-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .skeleton-card { background: rgba(255,255,255,0.04); border-radius: 18px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    .skeleton-rect { width: 100%; height: 16px; border-radius: 8px; background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.05) 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .skeleton-img { width: 100%; padding-top: 100%; border-radius: 14px; background: linear-gradient(120deg, rgba(255,255,255,0.05), rgba(255,255,255,0.12), rgba(255,255,255,0.05)); background-size: 200% 100%; animation: shimmer 1.6s infinite; margin-bottom: 10px; }
+    .skeleton-line-sm { height: 12px; margin-top: 8px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
     /* STORIES SECTION */
     .stories-wrap {
@@ -206,6 +226,12 @@
     .dock.visible { transform: translateY(0); }
     .dock-btn { background: var(--primary); color: #000; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 700; }
 
+    /* TOAST */
+    #toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: rgba(15,23,42,0.92); color: #fff; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 40px rgba(0,0,0,0.5); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
+    #toast.show { opacity: 1; transform: translate(-50%, -10px); }
+    #toast.success { border-color: rgba(34,211,238,0.5); }
+    #toast.error { border-color: rgba(239,68,68,0.7); }
+
     /* DETAIL STYLES */
     .detail-img { width: 100%; height: 300px; object-fit: cover; mask-image: linear-gradient(to bottom, black 80%, transparent); }
     .opt-chip {
@@ -219,6 +245,12 @@
   </style>
 </head>
 <body>
+
+  <div class="ambient" aria-hidden="true">
+    <span class="orb a"></span>
+    <span class="orb b"></span>
+    <span class="orb c"></span>
+  </div>
 
   <div id="mainScreen" class="container">
     <div class="header">
@@ -260,6 +292,15 @@
       <div class="cat-chip" onclick="toggleFilter('favorites')" id="filterFavorites" style="cursor:pointer;">
         <span id="filterFavoritesIcon">♡</span> Избранное
       </div>
+    </div>
+
+    <div id="skeletonGrid" class="skeleton-grid hidden">
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
+      <div class="skeleton-card"><div class="skeleton-img"></div><div class="skeleton-rect"></div><div class="skeleton-rect skeleton-line-sm"></div></div>
     </div>
 
     <div id="gridContainer" class="grid"></div>
@@ -306,6 +347,8 @@
     </div>
   </div>
 
+  <div id="toast"></div>
+
   <div id="storyViewer" class="hidden" onclick="closeStory()">
     <div class="story-progress"><div id="storyBar" class="story-bar"></div></div>
     <img id="storyImage" src="" class="story-full-img" />
@@ -343,16 +386,42 @@
     let sortBy = "default";
     let filterStock = false;
     let filterFavorites = false;
+    let toastTimer = null;
 
     // --- INIT ---
     async function init() {
+      toggleSkeleton(true);
       renderStories();
       try {
         const res = await fetch('products.json');
         products = await res.json();
         renderCats();
         renderGrid();
-      } catch(e) { document.getElementById('gridContainer').innerHTML = "Ошибка загрузки"; }
+      } catch(e) {
+        document.getElementById('gridContainer').innerHTML = "Ошибка загрузки";
+      }
+      toggleSkeleton(false);
+    }
+
+    function toggleSkeleton(show) {
+      const sk = document.getElementById('skeletonGrid');
+      const grid = document.getElementById('gridContainer');
+      if(!sk || !grid) return;
+      if(show) { sk.classList.remove('hidden'); grid.classList.add('hidden'); }
+      else { sk.classList.add('hidden'); grid.classList.remove('hidden'); }
+    }
+
+    function showToast(msg, type="success") {
+      const t = document.getElementById('toast');
+      if(!t) return;
+      t.textContent = msg;
+      t.classList.remove('show','success','error');
+      t.classList.add(type === "error" ? "error" : "success");
+      // reflow
+      void t.offsetWidth;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>t.classList.remove('show'), 2200);
     }
 
     // --- STORIES ---
@@ -486,6 +555,7 @@
       if(ex) ex.qty += qty; else cart.push({ id, optionId: optId, qty });
       if(tg) tg.HapticFeedback.impactOccurred('light');
       updateUI();
+      showToast('Добавлено в корзину');
     }
     
     function applyPromo() {
@@ -497,12 +567,14 @@
         msg.textContent = `Супер! Скидка ${activeDiscount*100}% применена`;
         msg.style.color = '#10b981';
         if(tg) tg.HapticFeedback.notificationOccurred('success');
+        showToast('Промо применено');
       } else {
         activeDiscount = 0;
         msg.style.display = 'block';
         msg.textContent = 'Неверный код';
         msg.style.color = '#ef4444';
         if(tg) tg.HapticFeedback.notificationOccurred('error');
+        showToast('Промо не найдено', 'error');
       }
       updateUI();
     }
@@ -632,6 +704,7 @@
       });
       const finalTotal = Math.round(total * (1 - activeDiscount));
       
+      showToast('Отправляем заказ');
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
       
       // Преобразуем формат корзины для бота (id -> productId)

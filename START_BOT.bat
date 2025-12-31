@@ -24,10 +24,10 @@ set WEBAPP_URL=https://market-equinox.vercel.app/
 echo [OK] Env variables set
 echo.
 echo ====================================
-echo Запуск Telegram бота...
+echo пїЅпїЅпїЅпїЅпїЅпїЅ Telegram пїЅпїЅпїЅпїЅ...
 echo ====================================
 echo.
-echo Нажмите Ctrl+C для остановки
-%PYTHON_CMD% bot.py
+echo пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Ctrl+C пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+%PYTHON_CMD% 
 
 pause
