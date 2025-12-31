@@ -526,10 +526,14 @@
         const isHit = idx % 3 === 0;
         const isNew = idx % 5 === 0;
 
+        // pick image per selected option or first available
+        const optSelected = (p.options && p.options.length) ? (p._selectedOpt || (p.options.find(o=>o.inStock)?.id || p.options[0].id)) : null;
+        const imgSrc = optSelected && p.optionImages && p.optionImages[optSelected] ? p.optionImages[optSelected] : p.image;
+
         el.innerHTML += `
           <div class="card" style="animation-delay:${idx*50}ms">
             <div class="card-image-box" onclick="openDetail(${p.id})">
-              ${p.image ? `<img src="${p.image}" class="card-img" loading="lazy">` : ''}
+              ${imgSrc ? `<img src="${imgSrc}" class="card-img" loading="lazy">` : ''}
               <div class="badges">
                 ${isHit ? '<span class="badge badge-hit">ХИТ</span>' : ''}
                 ${isNew ? '<span class="badge badge-new">NEW</span>' : ''}
@@ -620,6 +624,7 @@
       if(curP.options && curP.options.length) {
         const av = curP.options.find(o=>o.inStock);
         if(av) curO = av.id;
+        curP._selectedOpt = curO;
       }
       renderDetail();
       document.getElementById('detailScreen').classList.remove('hidden');
@@ -632,15 +637,17 @@
         opts = `
         <div style="margin-bottom:12px;">
           ${p.options.map(o => `
-            <div class="opt-chip ${o.id===curO?'active':''} ${!o.inStock?'disabled':''}" onclick="curO='${o.id}';renderDetail();">
+            <div class="opt-chip ${o.id===curO?'active':''} ${!o.inStock?'disabled':''}" onclick="curO='${o.id}';curP._selectedOpt='${o.id}';renderDetail(); renderGrid();">
               ${o.name}
             </div>`).join('')}
         </div>`;
       }
       const canBuy = (p.options && p.options.length) ? curO : (p.inStock !== false);
       
+      const heroImg = (p.optionImages && curO && p.optionImages[curO]) ? p.optionImages[curO] : p.image;
+      
       document.getElementById('detailContent').innerHTML = `
-        ${p.image ? `<img src="${p.image}" class="detail-img">` : ''}
+        ${heroImg ? `<img src="${heroImg}" class="detail-img">` : ''}
         <div class="container">
           <h2 style="margin:10px 0;">${p.name}</h2>
           <div style="font-size:24px;font-weight:800;color:var(--primary);margin-bottom:16px;">${p.price} грн</div>

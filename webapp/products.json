@@ -20,6 +20,11 @@
   "price": 380,
   "category": "Одноразки",
   "image": "img/elf-bar-1500-golubika-blueberry.jpg",
+  "optionImages": {
+    "mango_ice": "https://i.imgur.com/8uQkT4m.jpeg",
+    "cola_ice": "https://i.imgur.com/6qf9OTV.jpeg",
+    "grape": "https://i.imgur.com/YtWNF5Z.jpeg"
+  },
   "optionLabel": "Вкус",
   "options": [
     { "id": "mango_ice", "name": "Mango Ice", "inStock": true },
