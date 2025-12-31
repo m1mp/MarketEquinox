@@ -62,7 +62,7 @@
 
     /* HEADER & SEARCH */
     .header { display: flex; align-items: center; margin: 8px 0 16px; gap: 8px; }
-    .logo-text { font-size: 20px; font-weight: 800; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .logo-text { font-size: 20px; font-weight: 800; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
     
     .search-wrapper { position: relative; margin-bottom: 16px; }
     .search-input {
@@ -211,6 +211,22 @@
 
     <div id="catsContainer" class="cats-row"></div>
 
+    <div style="display:flex; gap:8px; margin-bottom:12px; align-items:center; flex-wrap:wrap;">
+      <select id="sortSelect" class="cat-chip" style="padding:8px 12px; cursor:pointer; border:none; background:rgba(255,255,255,0.05);" onchange="renderGrid()">
+        <option value="default">Сортировка</option>
+        <option value="price-asc">Цена: по возрастанию</option>
+        <option value="price-desc">Цена: по убыванию</option>
+        <option value="name-asc">Название: А-Я</option>
+        <option value="name-desc">Название: Я-А</option>
+      </select>
+      <div class="cat-chip" onclick="toggleFilter('stock')" id="filterStock" style="cursor:pointer;">
+        <span id="filterStockIcon">✓</span> В наличии
+      </div>
+      <div class="cat-chip" onclick="toggleFilter('favorites')" id="filterFavorites" style="cursor:pointer;">
+        <span id="filterFavoritesIcon">♡</span> Избранное
+      </div>
+    </div>
+
     <div id="gridContainer" class="grid"></div>
   </div>
 
@@ -289,6 +305,9 @@
     let favorites = JSON.parse(localStorage.getItem('vm_favs') || '[]');
     let activeCat = "Все";
     let activeDiscount = 0; // 0.1 = 10%
+    let sortBy = "default";
+    let filterStock = false;
+    let filterFavorites = false;
 
     // --- INIT ---
     async function init() {
@@ -338,12 +357,57 @@
     }
     function setCat(c) { activeCat = c; renderCats(); renderGrid(); }
 
+    function toggleFilter(type) {
+      if(type === 'stock') {
+        filterStock = !filterStock;
+        document.getElementById('filterStockIcon').textContent = filterStock ? '✓' : '';
+        document.getElementById('filterStock').classList.toggle('active', filterStock);
+      } else if(type === 'favorites') {
+        filterFavorites = !filterFavorites;
+        document.getElementById('filterFavoritesIcon').textContent = filterFavorites ? '♥' : '♡';
+        document.getElementById('filterFavorites').classList.toggle('active', filterFavorites);
+      }
+      renderGrid();
+    }
+
     function renderGrid() {
       const q = document.getElementById('searchInput').value.toLowerCase();
-      const list = products.filter(p => (activeCat==="Все"||p.category===activeCat) && p.name.toLowerCase().includes(q));
+      sortBy = document.getElementById('sortSelect').value;
+      
+      let list = products.filter(p => {
+        // Категория и поиск
+        const matchCat = activeCat==="Все" || p.category===activeCat;
+        const matchSearch = p.name.toLowerCase().includes(q);
+        
+        // Фильтр по наличию
+        const hasOptions = p.options && p.options.length > 0;
+        const inStock = hasOptions ? p.options.some(o=>o.inStock) : (p.inStock !== false);
+        const matchStock = !filterStock || inStock;
+        
+        // Фильтр по избранному
+        const matchFav = !filterFavorites || favorites.includes(p.id);
+        
+        return matchCat && matchSearch && matchStock && matchFav;
+      });
+      
+      // Сортировка
+      if(sortBy === 'price-asc') {
+        list.sort((a, b) => a.price - b.price);
+      } else if(sortBy === 'price-desc') {
+        list.sort((a, b) => b.price - a.price);
+      } else if(sortBy === 'name-asc') {
+        list.sort((a, b) => a.name.localeCompare(b.name, 'uk'));
+      } else if(sortBy === 'name-desc') {
+        list.sort((a, b) => b.name.localeCompare(a.name, 'uk'));
+      }
       
       const el = document.getElementById('gridContainer');
       el.innerHTML = "";
+      
+      if(list.length === 0) {
+        el.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-sec);">Товары не найдены</div>';
+        return;
+      }
       
       list.forEach((p, idx) => {
         const hasOptions = p.options && p.options.length > 0;
@@ -525,13 +589,30 @@
       const phone = document.getElementById('orderPhone').value;
       if(!name || !phone) return alert('Нужно имя и телефон');
       
+      // Пересчитываем итоговую сумму
+      let total = 0;
+      cart.forEach(i => {
+        const p = products.find(x => x.id===i.id);
+        if(p) total += p.price * i.qty;
+      });
+      const finalTotal = Math.round(total * (1 - activeDiscount));
+      
       confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      
+      // Преобразуем формат корзины для бота (id -> productId)
+      const itemsForBot = cart.map(item => ({
+        productId: item.id,
+        optionId: item.optionId || null,
+        qty: item.qty
+      }));
       
       const payload = {
         action: "cart_checkout",
-        items: cart,
+        items: itemsForBot,
         contact: { name, phone, address: document.getElementById('orderAddress').value, comment: document.getElementById('orderComment').value },
-        promo: activeDiscount > 0 ? document.getElementById('promoInput').value : null
+        promo: activeDiscount > 0 ? document.getElementById('promoInput').value : null,
+        totalPrice: finalTotal,
+        originalTotal: total
       };
       
       setTimeout(() => { if(tg) tg.sendData(JSON.stringify(payload)); }, 2000);
